@@ -1,7 +1,15 @@
 .wrapper {
     height: 90px;
+    width: 100%;
     background-color: black;
-    // background-color: transparent;
+    background-color: transparent;
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    &.scrolled {
+        background-color: black;
+        height: 70px;
+    }
     .container {
         padding: 0 32px 0 32px;
         display: flex;
@@ -15,6 +23,7 @@
             }
         }
     }
+    
 }
 .search {
     padding: 0 0px 0 30px;

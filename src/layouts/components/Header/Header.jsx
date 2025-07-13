@@ -3,15 +3,25 @@ import styles from './Header.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
 import { faCaretDown, faMagnifyingGlass, faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function Header() {
+    const [isScroll, setIsScroll] = useState(false)
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScroll(window.scrollY > 1)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    },[])
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper',{scrolled: isScroll})}>
             <div className={cx('container')}>
                 <div className={cx('logo')}>
-                    <img src="https://www.rophim.me/images/logo.svg" alt=""></img>
+                    <Link to={"/"}><img src="https://www.rophim.me/images/logo.svg" alt=""></img></Link>
                 </div>
                 <div className={cx('search')}>
                     <div className={cx('search-inner')}>
@@ -25,7 +35,7 @@ function Header() {
                     <div className={cx('menu-inner')}>
                         <div className={cx('menu-item')}>
                             <ul className={cx('menu-item-ul')}>
-                                <li>Chủ đề</li>
+                                <Link to={"./chu-de"}><li>Chủ đề</li></Link>
                                 <Tippy
                                     offset={[200,35]}
                                     interactive

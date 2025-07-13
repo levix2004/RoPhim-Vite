@@ -1,0 +1,166 @@
+.wrapper {
+    width: 100%;
+    height: 860px;
+    position: relative;
+    .container {
+        position: relative;
+        img {
+            height: 860px;
+            width: 100%;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            background: linear-gradient(to right, rgb(0, 0, 0), transparent 54%, transparent 75%, rgb(0, 0, 0)),
+                linear-gradient(to bottom, rgb(0, 0, 0), transparent 41%, transparent 50%, rgb(0, 0, 0));
+        }
+        .movie-info {
+            z-index: 50;
+            position: absolute;
+            top: 200px;
+            left: 50px;
+            color: white;
+            height: 460px;
+            width: 600px;
+            padding-top: 150px;
+        }
+    }
+}
+
+.movie-info {
+    .movie-title {
+        font-size: 40px;
+        color: white;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #ff0;
+    }
+    .movie-origin-name {
+        font-size: 16px;
+        padding: 15px 0 15px 0;
+        color: rgb(255, 216, 117);
+    }
+    .movie-stats {
+        display: flex;
+        font-size: 12px;
+        padding: 10px 0 10px 0;
+        p {
+            padding: 4px;
+            border: 1px solid white;
+            margin: 0 10px 0 0px;
+            border-radius: 4px;
+            font-weight: 500;
+            &:last-child {
+                background: white;
+                color: black;
+            }
+        }
+    }
+    .movie-categories {
+        display: flex;
+        font-size: 12px;
+        padding: 0px 0 25px 0;
+        p {
+            padding: 4px;
+            background-color: rgba(255, 255, 255, 0.063);
+            margin: 0 10px 0 0px;
+            border-radius: 4px;
+        }
+    }
+    .movie-story {
+        display: -webkit-box;
+        -webkit-line-clamp: 3; // Số dòng tối đa
+        -webkit-box-orient: vertical;
+        font-size: 14px;
+        overflow: hidden;
+        line-height: 1.6;
+    }
+}
+
+.touch {
+    display: flex;
+    margin-top: 30px;
+    .button-play {
+        width: 70px;
+        display: block;
+        height: 70px;
+        border-radius: 50px;
+        text-align: center;
+        line-height: 80px;
+        background: linear-gradient(39deg, rgb(254, 207, 89), rgb(255, 241, 204));
+        .play-icon {
+            width: 27px;
+            height: 27px;
+            color: black;
+        }
+    }
+    .touch-group {
+        width: 140px;
+        height: 54px;
+        border: 2px solid rgba(255, 255, 255, 0.063);
+        border-radius: 50px;
+        display: flex;
+        margin-left: 20px;
+        transform: translateY(15%);
+        .item {
+            display: block;
+            height: 54px;
+            width: 70px;
+            text-align: center;
+
+            .heart-icon,
+            .circleinfo-icon {
+                height: 20px;
+                width: 20px;
+                padding: 17px 20px 17px 18px;
+                &:hover {
+                    color: rgb(255, 216, 117);
+                }
+            }
+        }
+        .item:first-child {
+            display: block;
+            height: 54px;
+            width: 70px;
+            text-align: center;
+
+            border-right: 2px solid rgba(255, 255, 255, 0.063);
+        }
+        &:hover {
+            border-color: white;
+        }
+    }
+}
+
+.swiper-thumbnails {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+    overflow-x: auto;
+    z-index: 11;
+    position: absolute;
+    right: 80px;
+    bottom: 140px;
+    .thumb {
+        width: 80px !important;
+        height: 45px !important;
+        object-fit: cover;
+        opacity: 0.6;
+        cursor: pointer;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        transition: all 0.3s;
+
+        &.active {
+            opacity: 1;
+            border-color: #ffc107;
+        }
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
