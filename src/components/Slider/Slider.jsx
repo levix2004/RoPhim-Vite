@@ -50,10 +50,10 @@ function Slider({ movies }) {
                     pagination={{ clickable: true }}
                     onSlideChange={(swiper) => setActiceIndex(swiper.realIndex)}
                     onSwiper={(swiper) => {
-                        swiperRef.current = swiper ;
+                        swiperRef.current = swiper;
                     }}
                 >
-                    {movies.slice(0,6).map((movie, index) => {
+                    {movies.slice(0, 6).map((movie, index) => {
                         return (
                             <SwiperSlide key={index}>
                                 <img src={`https://phimimg.com/${movie.thumb_url}`} alt=""></img>
@@ -61,7 +61,7 @@ function Slider({ movies }) {
                         );
                     })}
                 </Swiper>
-                
+
                 <div className={cx('movie-info')}>
                     <div className={cx('movie-title')}>
                         <p>{movieDetail[activeIndex]?.movie?.name}</p>
@@ -100,16 +100,16 @@ function Slider({ movies }) {
                 </div>
             </div>
             <div className={cx('swiper-thumbnails')}>
-                    {movies.slice(0,6).map((movie, index) => (
-                        <img
-                            key={index}
-                            src={`https://phimimg.com/${movie.thumb_url}`}
-                            alt=""
-                            className={cx('thumb', { active: index === activeIndex })}
-                            onClick={() => swiperRef.current?.slideTo(index)}
-                        />
-                    ))}
-                </div>
+                {movies.slice(0, 6).map((movie, index) => (
+                    <img
+                        key={index}
+                        src={`https://phimimg.com/${movie.thumb_url}`}
+                        alt=""
+                        className={cx('thumb', { active: index === activeIndex })}
+                        onClick={() => swiperRef.current?.slideTo(index)}
+                    />
+                ))}
+            </div>
         </div>
     );
 }

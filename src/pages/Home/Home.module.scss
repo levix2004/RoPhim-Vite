@@ -1,0 +1,198 @@
+.wrapper {
+    .container {
+        color: white;
+        display: flex;
+        justify-content: center;
+        padding: 0 50px 0 50px;
+        background-color: #191b24;
+
+        .product-section {
+            width: 1800px;
+        }
+    }
+}
+.content-section {
+    .topic-list {
+        .list-header {
+            font-size: 30px;
+            padding: 20px 0 20px 0;
+            font-weight: 600;
+        }
+    }
+}
+.box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; // khoảng cách giữa các item
+    .box-item {
+        width: 240px;
+        height: 150px;
+        border-radius: 8px;
+        color: white;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+
+        &:nth-child(1) {
+            background-color: #ff6b6b;
+        }
+        &:nth-child(2) {
+            background-color: #6bcb77;
+        }
+        &:nth-child(3) {
+            background-color: #4d96ff;
+        }
+        &:nth-child(4) {
+            background-color: #ffd93d;
+        }
+        &:nth-child(5) {
+            background-color: #845ec2;
+        }
+        &:nth-child(6) {
+            background-color: #00c9a7;
+        }
+        &:nth-child(7) {
+            background-color: #f9f871;
+            color: black;
+        }
+        .box-topic {
+            position: absolute;
+            bottom: 60px;
+            font-size: 30px;
+            left: 20px;
+        }
+        .more {
+            position: absolute;
+            bottom: 20px;
+            font-size: 14px;
+            left: 20px;
+        }
+    }
+}
+.product-section {
+    margin-top: 30px;
+    .product-container {
+        border-radius: 20px;
+        color: white;
+        padding: 32px;
+        background: linear-gradient(0deg, rgba(40, 43, 58, 0) 20%, rgba(40, 43, 58, 1));
+    }
+}
+.row-intro {
+    display: flex;
+    &:not(:first-child) {
+        margin-top: 30px;
+    }
+    .intro {
+        width: 190px;
+        padding: 50px 30px 30px 15px;
+        position: relative;
+        .list-name {
+            font-size: 30px;
+            font-weight: 700;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+        }
+        .more {
+            font-size: 14px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+    }
+}
+
+.row-product-swiper {
+    position: relative;
+    .custom-swiper {
+        width: 1470px;
+        padding: 0 48px 0 0px !important;
+    }
+    .product-item {
+        img {
+            border-radius: 10px;
+            width: 290px;
+            height: 161px;
+        }
+        .product-name {
+            padding: 10px;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .product-origin-name {
+            padding: 0 10px 10px;
+            font-size: 12.6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+    :global(.swiper-button-disabled) {
+        display: none;
+    }
+    :global(.custom-navigation) {
+    }
+    :global(.swiper-button-prev-1),
+    :global(.swiper-button-next-1),
+    :global(.swiper-button-prev-2),
+    :global(.swiper-button-next-2),
+    :global(.swiper-button-prev-3),
+    :global(.swiper-button-next-3) {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50px;
+        z-index: 20;
+        top: 63px;
+    }
+    :global(.swiper-button-prev-1),
+    :global(.swiper-button-prev-2),
+    :global(.swiper-button-prev-3) {
+        position: absolute;
+        left: -27px;
+    }
+    :global(.swiper-button-next-1),
+    :global(.swiper-button-next-2),
+    :global(.swiper-button-next-3) {
+        position: absolute;
+        right: -13px;
+    }
+}
+
+.row-product {
+    width: 1800px;
+    margin-top: 20px;
+    position: relative;
+    .custom-swiper {
+        padding-right: 34px;
+    }
+    .row-product-name {
+        font-weight: 600;
+        font-size: 30px;
+        padding: 20px 0 20px 0;
+    }
+    .product-item {
+        img {
+            border-radius: 10px;
+            width: 211px;
+            height: 316.5px;
+        }
+        .product-name {
+            padding: 10px;
+            font-size: 14px;
+        }
+        .product-origin-name {
+            padding: 0 10px 10px;
+            font-size: 12.6px;
+        }
+        .product-name,
+        .product-origin-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+    }
+}

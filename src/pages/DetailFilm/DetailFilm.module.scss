@@ -1,0 +1,240 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    background-color: #191b24;
+    width: 100%;
+    min-height: 1000px;
+    .container {
+        margin-top: 100px;
+        .watch-ratio {
+            width: 1600px;
+            height: 900px;
+        }
+    }
+}
+
+.bread-crumb {
+    margin-top: 50px;
+    .bread-name {
+        font-size: 19.6px;
+        color: white;
+        display: flex;
+        align-items: center;
+        .arrow-icon {
+            padding: 10px 12px 10px 12px;
+            border: 2px solid white;
+            border-radius: 50px;
+            margin-right: 20px;
+            margin-left: 50px;
+        }
+    }
+}
+.watch-wrapper {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 40px;
+}
+.row-player-control {
+    height: 64px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    color: white;
+
+    .control-item {
+        display: flex;
+        width: 100%;
+        .like-box,
+        .add-box,
+        .theater-mode,
+        .share-box,
+        .report-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 15px 4px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            .icon {
+                padding-right: 8px;
+            }
+        }
+        .like-box:hover,
+        .add-box:hover,
+        .theater-mode:hover,
+        .share-box:hover,
+        .report-box:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .flex-grow {
+            flex-grow: 1 !important;
+        }
+        .add-box {
+        }
+        .theater-mode {
+        }
+        .share-box {
+        }
+        .report-box {
+        }
+    }
+}
+
+.info-section {
+    min-height: 1000px;
+    display: flex;
+    .watch-main {
+        width: 1080px;
+        padding: 40px;
+    }
+    .watch-side {
+        padding: 40px;
+        width: 360px;
+        background-color: blue;
+    }
+}
+
+.watch-main {
+    .movie-info {
+        display: flex;
+        .thumb {
+            img {
+                width: 100px;
+                height: 150px;
+                border-radius: 10px;
+            }
+        }
+    }
+}
+.info {
+    padding-left: 20px;
+    .movie-title {
+        font-size: 19.6px;
+        color: white;
+    }
+    .movie-origin-name {
+        font-size: 16px;
+        padding: 15px 0 17px 0;
+        color: rgb(255, 216, 117);
+    }
+    .movie-stats {
+        display: flex;
+        font-size: 12px;
+        padding: 12px 0 12px 0;
+        p {
+            color: white;
+            padding: 4px;
+            border: 1px solid white;
+            margin: 0 10px 0 0px;
+            border-radius: 4px;
+            font-weight: 500;
+            &:last-child {
+                background: white;
+                color: black;
+            }
+        }
+    }
+    .movie-categories {
+        display: flex;
+        font-size: 12px;
+        padding: 0px 0 25px 0;
+        p {
+            color: white;
+            padding: 4px;
+            background-color: rgba(255, 255, 255, 0.063);
+            margin: 0 10px 0 0px;
+            border-radius: 4px;
+        }
+    }
+}
+.desc-line {
+    padding-left: 149px;
+    .more-info {
+        padding-top: 20px;
+        color: rgb(255, 216, 117);
+        font-size: 14px;
+    }
+    .description {
+        width: 492px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; // Số dòng tối đa
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #aaaaaa;
+        font-size: 14px;
+    }
+}
+.episodes-section {
+    margin-top: 50px;
+    padding-top: 50px;
+    border-top: 1px white solid;
+    .ep-header {
+        display: flex;
+        .ss-header {
+            font-size: 20px;
+            color: white;
+            font-weight: 600;
+            p {
+                line-height: 32px;
+            }
+            .bars-icon {
+                padding: 0 10px 0 0px;
+            }
+            .drop-icon {
+                padding: 0 5px 0 5px;
+            }
+            .header-box {
+                width: 140px;
+                position: relative;
+                &::before {
+                    position: absolute;
+                    content: '';
+                    border-right: 1px rgb(165, 155, 155) solid;
+                    height: 32px;
+                    right: 0;
+                }
+            }
+        }
+        .caption-box {
+            margin: 2px 0px 0 20px;
+            .cap-btn {
+                background-color: transparent;
+                border: 1px white solid;
+                color: white;
+                font-size: 14px;
+                padding: 5px;
+                border-radius: 5px;
+                span {
+                    padding-right: 5px;
+                }
+            }
+        }
+    }
+    .ep-body {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 17px;
+        padding-top: 40px;
+        .ep-box {
+            height: 50px;
+            width: 120px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            p {
+                align-items: center;
+                text-align: center;
+                line-height: 50px;
+                .play-icon {
+                    padding-right: 4px;
+                }
+            }
+            &.active {
+                background-color: rgb(255, 216, 117);
+                color: black;
+            }
+        }
+    }
+}
