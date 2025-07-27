@@ -12,9 +12,11 @@ import {
     faFlag,
     faHeart,
     faLanguage,
+    faMessage,
     faPlay,
     faPlus,
     faShare,
+    faStar,
     faToggleOff,
 } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
@@ -43,6 +45,21 @@ function DetailFilm() {
         }
         fetchApi();
     }, [slug]);
+    const [suggestedMovies, setSuggestedMovies] = useState([]);
+
+    useEffect(() => {
+        async function fetchSuggestions() {
+            try {
+                const res = await fetch('https://phimapi.com/v1/api/danh-sach/phim-chieu-rap/?limit=10');
+                const data = await res.json();
+                setSuggestedMovies(data.data.items.slice(0,8)); // lấy 5 phim đầu
+            } catch (err) {
+                console.error('Lỗi tải đề xuất:', err);
+            }
+        }
+
+        fetchSuggestions();
+    }, []);
     if (loading) {
         return (
             <div>
@@ -51,7 +68,7 @@ function DetailFilm() {
         );
     }
     const changeEpisode = (src) => {
-        console.log(src)
+        console.log(src);
         setCurrentEpisode(src);
     };
     return (
@@ -166,7 +183,10 @@ function DetailFilm() {
                             <div className={cx('ep-body')}>
                                 {episodes.map((ep, index) => (
                                     <Link key={index} to={'#'}>
-                                        <div className={cx('ep-box',{active : ep.name == currentEpisode.name})} onClick={() => changeEpisode(ep)}>
+                                        <div
+                                            className={cx('ep-box', { active: ep.name == currentEpisode.name })}
+                                            onClick={() => changeEpisode(ep)}
+                                        >
                                             <p>
                                                 {' '}
                                                 <FontAwesomeIcon icon={faPlay} className={cx('play-icon')} />
@@ -178,7 +198,40 @@ function DetailFilm() {
                             </div>
                         </div>
                     </div>
-                    <div className={cx('watch-side')}></div>
+                    <div className={cx('watch-side')}>
+                        {/* <div className={cx('ws-rate')}>
+                                <div className={cx('line-box')}>
+                                    <div className={cx('rate')}><FontAwesomeIcon icon={faStar}/><p>Đánh giá</p></div>
+                                    <div className={cx('comments')}><FontAwesomeIcon icon={faMessage}/><p>Bình luận</p></div>
+                                </div>
+                                <div className={cx('w-rate')}></div>
+                            </div> */}
+                        <div className={cx('suggest-movies')}>
+                            <div className={cx('sm-list')}>
+                                <p className={cx('sm-header')}>Đề xuất cho bạn</p>
+                                {suggestedMovies.map((movie, index) => (
+                                    <div className={cx('sm-item')}>
+                                        <div className={cx('sm-thumb')}>
+                                            <img
+                                                src={
+                                                    `https://phimimg.com/${movie.poster_url}`
+                                                }
+                                                alt=""
+                                            ></img>
+                                        </div>
+                                        <div className={cx('sm-info')}>
+                                            <div className={cx('name')}>{movie.name}</div>
+                                            <div className={cx('origin-name')}>{movie.origin_name}</div>
+                                            <div className={cx('stats')}>
+                                                <p>{movie.lang}</p>
+                                                <p>{movie.time}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
