@@ -1,0 +1,90 @@
+.search {
+    padding: 0 0px 0 30px;
+    position: relative;
+    .search-inner {
+        .search-icon {
+            position: absolute;
+            color: white;
+            top: 12px;
+            left: 45px;
+        }
+        input {
+            width: 270px;
+            height: 30px;
+            padding: 6.4px 48px 6.4px 48px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            caret-color: red;
+        }
+        input::placeholder {
+            font-size: 14px;
+            color: white;
+            transform: translateY(-2px);
+        }
+    }
+}
+
+.search-tippy {
+    background-color: rgba(15, 17, 26, .95);
+    width: 366px;
+    border-radius: 5px;
+    .show-all {
+        color: white;
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+        background-color: rgba(255, 255, 255, 0.063);
+        cursor: pointer;
+        &:hover{
+           color: #f4f9b6;;
+        }
+    }
+}
+.sm-list {
+    padding: 20px;
+    .sm-header {
+        font-size: 12px;
+        color: aliceblue;
+        padding: 0 0 10px 0;
+        font-weight: 600;
+    }
+    .sm-item {
+        display: flex;
+        border-radius: 10px;
+        
+        height: 70px;
+        padding: 10px;
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.063);
+        }
+        .sm-thumb {
+            img {
+                width: 50px;
+                height: 67.5px;
+                border-radius: 10px;
+            }
+        }
+        .sm-info {
+            font-size: 14px;
+            padding-left: 10px;
+            .name {
+                color: white;
+            }
+            .origin-name {
+                color: #f4f9b6;
+                padding: 10px 0 10px 0;
+            }
+            .stats {
+                display: flex;
+                gap: 5px;
+                p {
+                    font-size: 11px;
+                    border-radius: 5px;
+                    color: #aaaaaa;
+                    padding: 0px 5px 5px 0;
+                }
+            }
+        }
+    }
+}

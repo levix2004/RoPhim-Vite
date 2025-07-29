@@ -2,9 +2,10 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
-import { faCaretDown, faMagnifyingGlass, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Search from '../../../components/Search/Search';
 
 const cx = classNames.bind(styles);
 
@@ -23,14 +24,7 @@ function Header() {
                 <div className={cx('logo')}>
                     <Link to={"/"}><img src="https://www.rophim.me/images/logo.svg" alt=""></img></Link>
                 </div>
-                <div className={cx('search')}>
-                    <div className={cx('search-inner')}>
-                        <div className={cx('search-icon')}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </div>
-                        <input placeholder="Tìm kiếm phim, diễn viên"></input>
-                    </div>
-                </div>
+                <Search/>
                 <div className={cx('menu-bar')}>
                     <div className={cx('menu-inner')}>
                         <div className={cx('menu-item')}>
