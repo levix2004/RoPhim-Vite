@@ -1,37 +1,56 @@
 import classNames from 'classnames/bind';
 import styles from './Search.module.scss';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faClose, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import useDebounce from '../../hooks/useDebounce';
 const cx = classNames.bind(styles);
 
 function Search() {
+    const inputRef = useRef();
     const [search, setSearch] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
     const [loading, setLoading] = useState(true);
+    const debounceValue = useDebounce(searchValue, 500);
     useEffect(() => {
         const fetchApi = async () => {
+            if (!debounceValue.trim()) {
+                setSearch([]);
+                setLoading(false);
+                return;
+            }
             setLoading(true);
-            const request = await fetch(`https://phimapi.com/v1/api/tim-kiem?keyword=Thuoc&limit=5`);
+            const request = await fetch(`https://phimapi.com/v1/api/tim-kiem?keyword=${searchValue}&limit=6`);
             const data = await request.json();
             setSearch(data.data.items);
             setLoading(false);
         };
         fetchApi();
-    }, []);
-    if (loading) {
-        return (
-            <div>
-                <h1>Đang tải</h1>
-            </div>
-        );
-    }
+    }, [debounceValue]);
+
+    const handleChange = (e) => {
+        const searchValue = e.target.value;
+        if (!searchValue.startsWith(' ')) {
+            setSearchValue(searchValue);
+            if (searchValue == '') {
+                setSearch([]);
+            }
+        }
+    };
+
+    const handleClear = () => {
+        setSearchValue('');
+        setSearch([]);
+        inputRef.current.focus();
+    };
     return (
         <Tippy
             interactive
-            hideOnClick="toggle"
+            hideOnClick={true}
             trigger="click"
-            offset={[15, 5]}
+            offset={[30, 5]}
+            placement="bottom-start"
             render={(attrs) => (
                 <div className={cx('search-tippy')} tabIndex="100" {...attrs}>
                     <div className={cx('sm-list')}>
@@ -45,8 +64,8 @@ function Search() {
                                     <div className={cx('name')}>{movie.name}</div>
                                     <div className={cx('origin-name')}>{movie.origin_name}</div>
                                     <div className={cx('stats')}>
-                                        <p>Tiếng Việt</p>
-                                        <p>108 phút</p>
+                                        <p>{movie.lang}</p>
+                                        <p>{movie.time}</p>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +80,22 @@ function Search() {
                     <div className={cx('search-icon')}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </div>
-                    <input placeholder="Tìm kiếm phim, diễn viên"></input>
+                    <input
+                        onChange={handleChange}
+                        ref={inputRef}
+                        value={searchValue}
+                        placeholder="Tìm kiếm phim, diễn viên"
+                    ></input>
+                    {!!searchValue && !loading && (
+                        <div className={cx('clear-icon')} onClick={handleClear}>
+                            <FontAwesomeIcon icon={faCircleXmark} />
+                        </div>
+                    )}
+                    {loading && (
+                        <div className={cx('loading-icon')}>
+                            <FontAwesomeIcon icon={faSpinner} />
+                        </div>
+                    )}
                 </div>
             </div>
         </Tippy>

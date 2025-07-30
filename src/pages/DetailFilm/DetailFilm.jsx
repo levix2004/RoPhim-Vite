@@ -210,7 +210,7 @@ function DetailFilm() {
                             <div className={cx('sm-list')}>
                                 <p className={cx('sm-header')}>Đề xuất cho bạn</p>
                                 {suggestedMovies.map((movie, index) => (
-                                    <div className={cx('sm-item')}>
+                                    <div key={index} className={cx('sm-item')}>
                                         <div className={cx('sm-thumb')}>
                                             <img
                                                 src={

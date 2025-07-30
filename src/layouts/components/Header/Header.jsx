@@ -33,7 +33,7 @@ function Header() {
                                 <Tippy
                                     offset={[200,35]}
                                     interactive
-                                    hideOnClick='toggle'
+                                    hideOnClick={true}
                                     trigger='click'
                                     render={(attrs) => (
                                         <div className={cx('tippy-box')} tabIndex="-1" {...attrs}>
