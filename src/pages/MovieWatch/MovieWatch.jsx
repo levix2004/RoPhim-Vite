@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import styles from './DetailFilm.module.scss';
+import styles from './MovieWatch.module.scss';
 import M3u8Player from './M3u8Player';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -21,7 +21,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 
-function DetailFilm() {
+function MovieWatch() {
     const { slug } = useParams();
     const [episodes, setEpisodes] = useState([]);
     const [currentEpisode, setCurrentEpisode] = useState(null);
@@ -31,7 +31,7 @@ function DetailFilm() {
         async function fetchApi() {
             try {
                 setLoading(true);
-                const request = await fetch(` https://phimapi.com/phim/${slug}`);
+                const request = await fetch(`https://phimapi.com/phim/${slug}`);
                 const data = await request.json();
                 setMovie(data.movie);
                 const vietsubServer =
@@ -52,7 +52,7 @@ function DetailFilm() {
             try {
                 const res = await fetch('https://phimapi.com/v1/api/danh-sach/phim-chieu-rap/?limit=10');
                 const data = await res.json();
-                setSuggestedMovies(data.data.items.slice(0,8)); // lấy 5 phim đầu
+                setSuggestedMovies(data.data.items.slice(0, 8)); // lấy 5 phim đầu
             } catch (err) {
                 console.error('Lỗi tải đề xuất:', err);
             }
@@ -212,12 +212,7 @@ function DetailFilm() {
                                 {suggestedMovies.map((movie, index) => (
                                     <div key={index} className={cx('sm-item')}>
                                         <div className={cx('sm-thumb')}>
-                                            <img
-                                                src={
-                                                    `https://phimimg.com/${movie.poster_url}`
-                                                }
-                                                alt=""
-                                            ></img>
+                                            <img src={`https://phimimg.com/${movie.poster_url}`} alt=""></img>
                                         </div>
                                         <div className={cx('sm-info')}>
                                             <div className={cx('name')}>{movie.name}</div>
@@ -238,4 +233,4 @@ function DetailFilm() {
     );
 }
 
-export default DetailFilm;
+export default MovieWatch;

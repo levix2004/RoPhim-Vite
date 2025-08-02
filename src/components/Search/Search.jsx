@@ -21,9 +21,9 @@ function Search() {
                 return;
             }
             setLoading(true);
-            const request = await fetch(`https://phimapi.com/v1/api/tim-kiem?keyword=${searchValue}&limit=6`);
+            const request = await fetch(`https://phimapi.com/v1/api/tim-kiem?keyword=${debounceValue}&limit=6`);
             const data = await request.json();
-            setSearch(data.data.items);
+            setSearch(data.data.items || []);
             setLoading(false);
         };
         fetchApi();
@@ -33,9 +33,6 @@ function Search() {
         const searchValue = e.target.value;
         if (!searchValue.startsWith(' ')) {
             setSearchValue(searchValue);
-            if (searchValue == '') {
-                setSearch([]);
-            }
         }
     };
 
@@ -53,25 +50,33 @@ function Search() {
             placement="bottom-start"
             render={(attrs) => (
                 <div className={cx('search-tippy')} tabIndex="100" {...attrs}>
-                    <div className={cx('sm-list')}>
-                        <p className={cx('sm-header')}>Danh sách phim</p>
-                        {search.map((movie) => (
-                            <div className={cx('sm-item')}>
-                                <div className={cx('sm-thumb')}>
-                                    <img src={`https://phimimg.com/${movie.poster_url}`} alt=""></img>
-                                </div>
-                                <div className={cx('sm-info')}>
-                                    <div className={cx('name')}>{movie.name}</div>
-                                    <div className={cx('origin-name')}>{movie.origin_name}</div>
-                                    <div className={cx('stats')}>
-                                        <p>{movie.lang}</p>
-                                        <p>{movie.time}</p>
+                    {search.length > 0 ? (
+                        <>
+                            <div className={cx('sm-list')}>
+                                <p className={cx('sm-header')}>Danh sách phim</p>
+                                {search.map((movie, index) => (
+                                    <div className={cx('sm-item')} key={movie.id || index}>
+                                        <div className={cx('sm-thumb')}>
+                                            <img src={`https://phimimg.com/${movie.poster_url}`} alt={movie.name} />
+                                        </div>
+                                        <div className={cx('sm-info')}>
+                                            <div className={cx('name')}>{movie.name}</div>
+                                            <div className={cx('origin-name')}>{movie.origin_name}</div>
+                                            <div className={cx('stats')}>
+                                                <p>{movie.lang}</p>
+                                                <p>{movie.time}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                ))}
+                                <div className={cx('show-all')}>Toàn bộ kết quả</div>
                             </div>
-                        ))}
-                    </div>
-                    <div className={cx('show-all')}>Toàn bộ kết quả</div>
+                        </>
+                    ) : (
+                        searchValue.trim() &&
+                        debounceValue &&
+                        !loading && <div className={cx('no-result')}>Không tìm được kết quả phù hợp</div>
+                    )}
                 </div>
             )}
         >

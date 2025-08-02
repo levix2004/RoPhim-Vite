@@ -9,6 +9,7 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css/pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faHeart, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 function Slider({ movies }) {
@@ -56,7 +57,7 @@ function Slider({ movies }) {
                     {movies.slice(0, 6).map((movie, index) => {
                         return (
                             <SwiperSlide key={index}>
-                                <img src={`https://phimimg.com/${movie.thumb_url}`} alt=""></img>
+                                <Link to={`/phim/${movie.slug}`}><img src={`https://phimimg.com/${movie.thumb_url}`} alt=""></img></Link>
                             </SwiperSlide>
                         );
                     })}

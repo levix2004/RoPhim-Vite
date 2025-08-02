@@ -15,7 +15,7 @@
             color: white;
             cursor: pointer;
         }
-        .loading-icon{
+        .loading-icon {
             position: absolute;
             right: 10px;
             top: 13px;
@@ -54,6 +54,13 @@
             color: #f4f9b6;
         }
     }
+    .no-result {
+        color: white;
+        font-size: 16px;
+        text-align: center;
+        line-height: 41px;
+        height: 41px;
+    }
 }
 .sm-list {
     padding: 20px;
@@ -63,6 +70,7 @@
         padding: 0 0 10px 0;
         font-weight: 600;
     }
+
     .sm-item {
         display: flex;
         border-radius: 10px;
