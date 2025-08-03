@@ -28,11 +28,12 @@
 }
 
 .info {
-    padding: 20px;
+    padding: 30px;
     .movie-img {
         img {
             width: 160px;
             height: 240px;
+            border-radius: 10px;
         }
     }
     .movie-title {
@@ -94,5 +95,51 @@
     .label {
         color: white;
         font-weight: 600;
+    }
+}
+.movie-main {
+    .inner {
+        padding: 30px;
+    }
+}
+.toolbar {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    .watch-btn {
+        display: flex;
+        width: 180px;
+        height: 60px;
+        align-items: center;
+        justify-content: center;
+        background-image: linear-gradient(39deg, rgb(254, 207, 89), rgb(255, 241, 204));
+        border-radius: 30px;
+        font-size: 18px;
+        gap: 10px;
+        margin-right: 10px;
+        p {
+            font-weight: 500;
+        }
+    }
+
+    .like-btn,
+    .add-btn,
+    .share-btn,
+    .cmt-btn {
+        text-align: center;
+        padding: 0 10px 0 10px;
+        height: 100%;
+        border-radius: 10px;
+        margin: 0 10px 0 10px;
+        font-size: 12.6px;
+        .icon {
+            padding-top: 10px;
+        }
+        p {
+            padding-top: 10px;
+        }
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     }
 }
