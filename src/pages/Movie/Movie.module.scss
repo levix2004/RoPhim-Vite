@@ -17,13 +17,15 @@
     margin-top: -150px;
     .movie-side {
         width: 440px;
-        background-color: red;
+        background-color: rgba(25, 27, 36, 0.3);
         border-radius: 10px 50px 50px 10px;
+        backdrop-filter: blur(20px);
     }
     .movie-main {
         width: 1160px;
-        background-color: blue;
+        background-color: rgba(25, 27, 36, 0.3);
         border-radius: 50px 10px 10px 50px;
+        backdrop-filter: blur(20px);
     }
 }
 
@@ -106,6 +108,7 @@
     display: flex;
     align-items: center;
     height: 60px;
+    margin-left: -10px;
     .watch-btn {
         display: flex;
         width: 180px;
@@ -140,6 +143,105 @@
         }
         &:hover {
             background-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+}
+
+.content-box {
+    margin-top: 40px;
+    .tabs-nav {
+        display: flex;
+        gap: 30px;
+        font-size: 14px;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.163);
+        p {
+            padding: 15px 0px 15px 0;
+            cursor: pointer;
+            &.active {
+                color: #ffd875;
+                border-bottom: 1px solid #ffd875;
+            }
+        }
+    }
+}
+.tab-content {
+    .ep-content,
+    .gall-content,
+    .actor-content,
+    .sg-content {
+        display: none;
+        &.active {
+            display: block;
+        }
+    }
+}
+.ep-content {
+    .episodes-section {
+        margin-top: 50px;
+
+        .ep-header {
+            display: flex;
+            .ss-header {
+                font-size: 20px;
+                color: white;
+                font-weight: 600;
+                p {
+                    line-height: 32px;
+                }
+                .bars-icon {
+                    padding: 0 10px 0 0px;
+                }
+                .drop-icon {
+                    padding: 0 5px 0 5px;
+                }
+                .header-box {
+                    width: 140px;
+                    position: relative;
+                    &::before {
+                        position: absolute;
+                        content: '';
+                        border-right: 1px rgb(165, 155, 155) solid;
+                        height: 32px;
+                        right: 0;
+                    }
+                }
+            }
+            .caption-box {
+                margin: 2px 0px 0 20px;
+                .cap-btn {
+                    background-color: transparent;
+                    border: 1px white solid;
+                    color: white;
+                    font-size: 14px;
+                    padding: 5px;
+                    border-radius: 5px;
+                    span {
+                        padding-right: 5px;
+                    }
+                }
+            }
+        }
+        .ep-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 17px;
+            padding-top: 40px;
+            .ep-box {
+                height: 50px;
+                width: 120px;
+                border-radius: 5px;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+                p {
+                    align-items: center;
+                    text-align: center;
+                    line-height: 50px;
+                    .play-icon {
+                        padding-right: 4px;
+                    }
+                }
+            }
         }
     }
 }

@@ -19,9 +19,12 @@ import {
     faStar,
     faToggleOff,
 } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function MovieWatch() {
+    const location = useLocation();
+    const selectedEpFromState = location.state?.episode || null;
     const { slug } = useParams();
     const [episodes, setEpisodes] = useState([]);
     const [currentEpisode, setCurrentEpisode] = useState(null);
@@ -37,7 +40,13 @@ function MovieWatch() {
                 const vietsubServer =
                     data.episodes.find((s) => s.server_name.toLowerCase().includes('vietsub')) || data.episodes[0];
                 setEpisodes(vietsubServer.server_data);
-                setCurrentEpisode(vietsubServer.server_data[0]);
+                if (selectedEpFromState) {
+                    console.log(selectedEpFromState)
+                    setCurrentEpisode(selectedEpFromState);
+                } else {
+                    setCurrentEpisode(vietsubServer.server_data[0]);
+                }
+
                 setLoading(false);
             } catch {
                 console.log('Error');
