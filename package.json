@@ -16,6 +16,7 @@
     "@tippyjs/react": "^4.2.6",
     "axios": "^1.10.0",
     "classnames": "^2.5.1",
+    "he": "^1.2.0",
     "hls.js": "^1.6.7",
     "normalize.css": "^8.0.1",
     "react": "^19.1.0",

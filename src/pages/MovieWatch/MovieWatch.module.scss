@@ -90,7 +90,6 @@
     .watch-side {
         padding: 40px;
         width: 360px;
-        
     }
 }
 
@@ -152,7 +151,9 @@
     width: 492px;
     .more-info {
         padding-top: 20px;
-        color: rgb(255, 216, 117);
+        a {
+            color: rgb(255, 216, 117);
+        }
         font-size: 14px;
     }
     .description {
@@ -247,7 +248,7 @@
     }
     .sm-item {
         display: flex;
-        background-color: rgba(255, 255, 255, 0.063);;
+        background-color: rgba(255, 255, 255, 0.063);
         border-radius: 10px;
         margin-top: 15px;
         .sm-thumb {
@@ -269,7 +270,7 @@
                 padding: 0px 0 10px 0;
             }
             .stats {
-                display: flex; 
+                display: flex;
                 gap: 5px;
                 p {
                     font-size: 11px;

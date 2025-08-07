@@ -10,58 +10,66 @@ import Search from '../../../components/Search/Search';
 const cx = classNames.bind(styles);
 
 function Header() {
-    const [isScroll, setIsScroll] = useState(false)
+    const [isScroll, setIsScroll] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [country, setCountry] = useState([]);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         const handleScroll = () => {
-            setIsScroll(window.scrollY > 1)
-        }
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    },[])
+            setIsScroll(window.scrollY > 1);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+    useEffect(() => {
+        const fetchCategoriesApi = async () => {
+            try {
+                setLoading(true);
+                const [categoryApi, countryApi] = await Promise.all([
+                    fetch(`https://phimapi.com/the-loai`),
+                    fetch(`https://phimapi.com/quoc-gia`),
+                ]);
+                const [categoryData, countryData] = await Promise.all([categoryApi.json(), countryApi.json()]);
+                setCategories(categoryData);
+                setCountry(countryData);
+                setLoading(false);
+            } catch {
+                console.log('error');
+            }
+        };
+        fetchCategoriesApi();
+    }, []);
     return (
-        <div className={cx('wrapper',{scrolled: isScroll})}>
+        <div className={cx('wrapper', { scrolled: isScroll })}>
             <div className={cx('container')}>
                 <div className={cx('logo')}>
-                    <Link to={"/"}><img src="https://www.rophim.me/images/logo.svg" alt=""></img></Link>
+                    <div>
+                        <Link to={'/'}>
+                            <img src="https://www.rophim.me/images/logo.svg" alt=""></img>
+                        </Link>
+                    </div>
                 </div>
-                <Search/>
+                <Search />
                 <div className={cx('menu-bar')}>
                     <div className={cx('menu-inner')}>
                         <div className={cx('menu-item')}>
                             <ul className={cx('menu-item-ul')}>
-                                <Link to={"./chu-de"}><li>Chủ đề</li></Link>
+                                <Link to={'/chu-de'}>
+                                    <li>Chủ đề</li>
+                                </Link>
                                 <Tippy
-                                    offset={[200,35]}
+                                    offset={[200, 35]}
                                     interactive
                                     hideOnClick={true}
-                                    trigger='click'
+                                    trigger="click"
                                     render={(attrs) => (
                                         <div className={cx('tippy-box')} tabIndex="-1" {...attrs}>
                                             <div className={cx('tippy-container')}>
-                                                <ul className={cx('column')}>
-                                                    <li>Anime</li>
-                                                    <li>Chuyển thể</li>
-                                                    <li>Cổ trang</li>
-                                                    <li>Disney</li>
-                                                </ul>
-                                                <ul className={cx('column')}>
-                                                    <li>Bí ẩn</li>
-                                                    <li>Chính kịch</li>
-                                                    <li>Cung đấu</li>
-                                                    <li>Cổ tích</li>
-                                                </ul>
-                                                <ul className={cx('column')}>
-                                                    <li>Chiến tranh</li>
-                                                    <li>Chính luận</li>
-                                                    <li>Cuối tuần</li>
-                                                    <li>Cổ điển</li>
-                                                </ul>
-                                                <ul className={cx('column')}>
-                                                    <li>Chiếu rạp</li>
-                                                    <li>Chính trị</li>
-                                                    <li>Cách mạng</li>
-                                                    <li>DC</li>
-                                                </ul>
+                                                {categories.map((cate, index) => (
+                                                    <Link key={index} to={`/the-loai/${cate.slug}`}>
+                                                        <div className={cx('grid-4-col')}>{cate.name}</div>
+                                                    </Link>
+                                                ))}
                                             </div>
                                         </div>
                                     )}
@@ -74,10 +82,40 @@ function Header() {
                                     </li>
                                 </Tippy>
 
-                                <li>Phim lẻ</li>
-                                <li>Phim bộ</li>
-                                <li>Phim chiếu rạp</li>
-                                <li>Quốc gia</li>
+                                <Link to={`/danh-sach/phim-le`}>
+                                    <li>Phim lẻ</li>
+                                </Link>
+                                <Link to={`/danh-sach/phim-bo`}>
+                                    <li>Phim bộ</li>
+                                </Link>
+                                <Link to={`/danh-sach/phim-chieu-rap`}>
+                                    <li>Phim chiếu rạp</li>
+                                </Link>
+                                <Tippy
+                                    offset={[200, 35]}
+                                    interactive
+                                    hideOnClick={true}
+                                    trigger="click"
+                                    render={(attrs) => (
+                                        <div className={cx('tippy-box')} tabIndex="-1" {...attrs}>
+                                            <div className={cx('tippy-container')}>
+                                                {country.map((coun, index) => (
+                                                    <Link key={index} to={`/quoc-gia/${coun.slug}`}>
+                                                        <div className={cx('grid-4-col')}>{coun.name}</div>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                >
+                                    <li className={cx('no-hover')}>
+                                        Quốc gia{' '}
+                                        <span style={{ padding: 5 }}>
+                                            <FontAwesomeIcon icon={faCaretDown} />
+                                        </span>
+                                    </li>
+                                </Tippy>
+
                                 <li>Diễn viên</li>
                                 <li>Lịch chiếu</li>
                             </ul>

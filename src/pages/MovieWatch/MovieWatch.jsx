@@ -41,12 +41,11 @@ function MovieWatch() {
                     data.episodes.find((s) => s.server_name.toLowerCase().includes('vietsub')) || data.episodes[0];
                 setEpisodes(vietsubServer.server_data);
                 if (selectedEpFromState) {
-                    console.log(selectedEpFromState)
+                    console.log(selectedEpFromState);
                     setCurrentEpisode(selectedEpFromState);
                 } else {
                     setCurrentEpisode(vietsubServer.server_data[0]);
                 }
-
                 setLoading(false);
             } catch {
                 console.log('Error');
@@ -85,7 +84,7 @@ function MovieWatch() {
             <div className={cx('container')}>
                 <div className={cx('watch-player')}>
                     <div className={cx('bread-crumb')}>
-                        <Link to={'/'}>
+                        <Link to={`/phim/${slug}`}>
                             <p className={cx('bread-name')}>
                                 <FontAwesomeIcon icon={faArrowLeft} className={cx('arrow-icon')} />
                                 Xem phim {movie.name}
@@ -156,7 +155,7 @@ function MovieWatch() {
                                     <p>{movie.content}</p>
                                 </div>
                                 <div className={cx('more-info')}>
-                                    <a>
+                                    <a href={`/phim/${slug}`}>
                                         Thông tin phim{' '}
                                         <span>
                                             <FontAwesomeIcon icon={faAngleRight} />

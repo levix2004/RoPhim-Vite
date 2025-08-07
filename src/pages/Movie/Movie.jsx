@@ -27,6 +27,22 @@ function Movie() {
         };
         fetchMovie();
     }, []);
+    const [suggestedMovies, setSuggestedMovies] = useState([]);
+
+    useEffect(() => {
+        if (movie.country && movie.country.length > 0) {
+            async function fetchSuggestions() {
+                try {
+                    const res = await fetch(`https://phimapi.com/v1/api/quoc-gia/${movie.country[0].slug}?limit=12`);
+                    const data = await res.json();
+                    setSuggestedMovies(data.data.items.slice(0, 12));
+                } catch (err) {
+                    console.error('Lỗi tải đề xuất:', err);
+                }
+            }
+            fetchSuggestions();
+        }
+    }, [movie]);
     if (loading) {
         return (
             <>
@@ -84,10 +100,12 @@ function Movie() {
                 <div className={cx('movie-main')}>
                     <div className={cx('inner')}>
                         <div className={cx('toolbar')}>
-                            <div className={cx('watch-btn')}>
-                                <FontAwesomeIcon icon={faPlay} />
-                                <p>Xem ngay</p>
-                            </div>
+                            <Link to={`/xem-phim/${slug}`}>
+                                <div className={cx('watch-btn')}>
+                                    <FontAwesomeIcon icon={faPlay} />
+                                    <p>Xem ngay</p>
+                                </div>
+                            </Link>
                             <div className={cx('like-btn')}>
                                 <FontAwesomeIcon icon={faHeart} className={cx('icon')} />
                                 <p>Yêu thích</p>
@@ -175,7 +193,21 @@ function Movie() {
                                 </div>
                                 <div className={cx('gall-content', { active: 2 == active })}></div>
                                 <div className={cx('actor-content', { active: 3 == active })}></div>
-                                <div className={cx('sg-content', { active: 4 == active })}></div>
+                                <div className={cx('sg-content', { active: 4 == active })}>
+                                    <div className={cx('list-product')}>
+                                        {suggestedMovies.map((movie, index) => {
+                                            return (
+                                                <div key={index} className={cx('product-item')}>
+                                                    <div className={cx('product-img')}>
+                                                        <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
+                                                    </div>
+                                                    <div className={cx('product-name')}>{movie.name}</div>
+                                                    <div className={cx('product-origin-name')}>{movie.origin_name}</div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

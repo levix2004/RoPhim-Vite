@@ -79,7 +79,7 @@ function Home() {
                             <div className={cx('box-item')}>
                                 <div className={cx('box-content')}>
                                     <div className={cx('box-topic')}>
-                                        <p>Marvel</p>
+                                        <Link to={`chu-de/Marvel`}><p>Marvel</p></Link>
                                     </div>
                                     <div className={cx('more')}>
                                         <p>
