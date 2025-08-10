@@ -5,11 +5,44 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     .container {
         min-height: 1000px;
         width: 100%;
         padding: 50px;
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            color: white;
+            .spinner {
+                animation: Spinner 1s linear infinite;
+            }
+            @keyframes Spinner {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     }
 }
 .title-page {
@@ -48,6 +81,44 @@
             overflow: hidden;
             text-overflow: ellipsis;
             text-align: center;
+        }
+    }
+}
+
+.pagination {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .nav-page {
+        display: flex;
+        color: white;
+
+        .fr-btn {
+            padding: 15px 18px 15px 18px;
+            border-radius: 50px;
+            background-color: rgb(47, 51, 70);
+            cursor: pointer;
+        }
+        .current-page {
+            padding: 15px 18px 15px 18px;
+            border-radius: 30px;
+            background-color: rgb(47, 51, 70);
+            margin: 0 10px 0 10px;
+            .num {
+                color: rgb(255, 216, 117);
+                padding: 3px 13px 3px 17px;
+                background-color: black;
+                border-radius: 30px;
+                margin-right: 5px;
+            }
+        }
+
+        .back-btn {
+            padding: 15px 18px 15px 18px;
+            border-radius: 50px;
+            background-color: rgb(47, 51, 70);
+            cursor: pointer;
         }
     }
 }
