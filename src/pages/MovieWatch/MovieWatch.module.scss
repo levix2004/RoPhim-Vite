@@ -58,6 +58,9 @@
             .icon {
                 padding-right: 8px;
             }
+            .red {
+                color: #ffd875;
+            }
         }
         .like-box:hover,
         .add-box:hover,
@@ -186,7 +189,7 @@
                 padding: 0 5px 0 5px;
             }
             .header-box {
-                width: 140px;
+                width: 240px;
                 position: relative;
                 &::before {
                     position: absolute;

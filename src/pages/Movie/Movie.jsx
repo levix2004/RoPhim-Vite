@@ -3,9 +3,24 @@ import styles from './Movie.module.scss';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faHeart, faPlay, faPlus, faShare } from '@fortawesome/free-solid-svg-icons';
-import { faBarsStaggered, faCaretDown, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { 
+    faComment, 
+    faHeart, 
+    faPlay, 
+    faPlus, 
+    faShare, 
+    faBarsStaggered, 
+    faCaretDown, 
+    faLanguage,
+    faAngleRight,
+    faFlag,
+    faToggleOff
+} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+import Loading from '../../components/Loading/Loading';
+import { useWatchlist } from '../../hooks/useWatchList';
+
 const cx = classNames.bind(styles);
 
 function Movie() {
@@ -14,20 +29,30 @@ function Movie() {
     const [loading, setLoading] = useState(true);
     const [active, setActive] = useState(1);
     const [episodes, setEpisodes] = useState([]);
+    const { requireAuth } = useAuth(); 
+    const [suggestedMovies, setSuggestedMovies] = useState([]);
+    const { liked, toggleLike } = useWatchlist(movie);
+
     useEffect(() => {
         const fetchMovie = async () => {
             setLoading(true);
-            const request = await fetch(`https://phimapi.com/phim/${slug}`);
-            const data = await request.json();
-            setMovie(data.movie);
-            const vietsubServer =
-                data.episodes.find((s) => s.server_name.toLowerCase().includes('vietsub')) || data.episodes[0];
-            setEpisodes(vietsubServer.server_data);
-            setLoading(false);
+            try {
+                const request = await fetch(`https://phimapi.com/phim/${slug}`);
+                const data = await request.json();
+                setMovie(data.movie);
+                
+                const vietsubServer =
+                    data.episodes.find((s) => s.server_name.toLowerCase().includes('vietsub')) || data.episodes[0];
+                setEpisodes(vietsubServer?.server_data || []);
+                
+                setLoading(false);
+            } catch (error) {
+                console.error("Lỗi tải phim:", error);
+                setLoading(false);
+            }
         };
         fetchMovie();
-    }, []);
-    const [suggestedMovies, setSuggestedMovies] = useState([]);
+    }, [slug]);
 
     useEffect(() => {
         if (movie.country && movie.country.length > 0) {
@@ -45,21 +70,20 @@ function Movie() {
     }, [movie]);
     if (loading) {
         return (
-            <>
-                <h1>Đang tải</h1>
-            </>
+            <Loading/>
         );
     }
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('movie-thumb')}>
-                <img src={movie.thumb_url}></img>
+                <img src={movie.thumb_url} alt="thumb"></img>
             </div>
             <div className={cx('container')}>
                 <div className={cx('movie-side')}>
                     <div className={cx('info')}>
                         <div className={cx('movie-img')}>
-                            <img src={movie.poster_url}></img>
+                            <img src={movie.poster_url} alt="poster"></img>
                         </div>
                         <div className={cx('movie-title')}>
                             <p>{movie.name}</p>
@@ -68,14 +92,13 @@ function Movie() {
                             <p>{movie?.origin_name}</p>
                         </div>
                         <div className={cx('movie-stats')}>
-                            <p>IMDb {movie?.tmdb.vote_average}</p>
+                            <p>IMDb {movie?.tmdb?.vote_average}</p>
                             <p>{movie?.year}</p>
                             <p>{movie?.time}</p>
-
                             <p>{movie?.status}</p>
                         </div>
                         <div className={cx('movie-categories')}>
-                            {movie?.category.map((item, index) => (
+                            {movie?.category?.map((item, index) => (
                                 <p key={index}>{item.name}</p>
                             ))}
                         </div>
@@ -89,11 +112,11 @@ function Movie() {
                         </div>
                         <div className={cx('movie-coun')}>
                             <p className={cx('label')}>Quốc gia: </p>
-                            <p>{movie.country[0].name}</p>
+                            <p>{movie.country && movie.country[0]?.name}</p>
                         </div>
                         <div className={cx('movie-direc')}>
                             <p className={cx('label')}>Đạo diễn</p>
-                            <p>{movie.director[0]}</p>
+                            <p>{movie.director && movie.director[0]}</p>
                         </div>
                     </div>
                 </div>
@@ -106,10 +129,19 @@ function Movie() {
                                     <p>Xem ngay</p>
                                 </div>
                             </Link>
-                            <div className={cx('like-btn')}>
-                                <FontAwesomeIcon icon={faHeart} className={cx('icon')} />
-                                <p>Yêu thích</p>
+                            
+                            <div 
+                                className={cx('like-btn')} 
+                                onClick={toggleLike}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <FontAwesomeIcon 
+                                    icon={faHeart} 
+                                    className={cx('icon', { red: liked })} 
+                                />
+                                <p>{liked ? 'Đã thích' : 'Yêu thích'}</p>
                             </div>
+
                             <div className={cx('add-btn')}>
                                 <FontAwesomeIcon icon={faPlus} className={cx('icon')} />
                                 <p>Thêm vào</p>
@@ -151,7 +183,7 @@ function Movie() {
                                                                 className={cx('bars-icon')}
                                                             />
                                                         </span>{' '}
-                                                        Phần 1{' '}
+                                                        Danh sách tập{' '}
                                                         <span>
                                                             <FontAwesomeIcon
                                                                 icon={faCaretDown}
@@ -172,10 +204,10 @@ function Movie() {
                                         </div>
                                         <div className={cx('ep-body')}>
                                             {episodes.map((ep, index) => (
-                                                <Link
-                                                    key={index}
+                                                <Link 
+                                                    key={index} 
                                                     to={`/xem-phim/${slug}`}
-                                                    state={{ episode: ep }} // truyền episode qua state
+                                                    state={{ episode: ep.name }} 
                                                 >
                                                     <div className={cx('ep-box')}>
                                                         <p>

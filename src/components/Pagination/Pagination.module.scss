@@ -1,0 +1,44 @@
+.pagination {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .nav-page {
+        display: flex;
+        color: white;
+
+        .nav-btn {
+            padding: 15px 18px;
+            border-radius: 50px;
+            background-color: rgb(47, 51, 70);
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background-color: rgb(67, 72, 97);
+            }
+
+            &.disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+        }
+
+        .current-page {
+            padding: 15px 18px;
+            border-radius: 30px;
+            background-color: rgb(47, 51, 70);
+            margin: 0 10px;
+
+            .num {
+                color: rgb(255, 216, 117);
+                padding: 3px 13px;
+                background-color: black;
+                border-radius: 30px;
+                margin-right: 5px;
+            }
+        }
+    }
+}

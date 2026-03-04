@@ -3,7 +3,6 @@ import classNames from 'classnames/bind';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useEffect, useState, useRef } from 'react';
 
-// Import Swiper styles
 import 'swiper/css';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css/pagination';

@@ -28,7 +28,7 @@
             border-radius: 5px;
             border: none;
             background-color: rgba(255, 255, 255, 0.1);
-            caret-color: red;
+            
             color: white;
         }
         input::placeholder {
@@ -101,7 +101,7 @@
             .name,
             .origin-name {
                 display: -webkit-box;
-                -webkit-line-clamp: 1; // Số dòng tối đa
+                -webkit-line-clamp: 1; 
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 flex-wrap: nowrap;

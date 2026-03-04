@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './MovieWatch.module.scss';
 import M3u8Player from './M3u8Player';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -20,6 +20,12 @@ import {
     faToggleOff,
 } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router-dom';
+
+import Loading from '../../components/Loading/Loading';
+import { useWatchlist } from '../../hooks/useWatchList';
+import MovieComments from '../../components/MovieComments/MovieComments';
+
+
 const cx = classNames.bind(styles);
 
 function MovieWatch() {
@@ -30,37 +36,80 @@ function MovieWatch() {
     const [currentEpisode, setCurrentEpisode] = useState(null);
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
+    const lastSaveTimeRef = useRef(0);
+    const [suggestedMovies, setSuggestedMovies] = useState([]);
+    const stateCurrentTime = location.state?.currentTime;
+    const [savedTime, setSavedTime] = useState(stateCurrentTime || 0);
+    const {liked, toggleLike} = useWatchlist(movie);
     useEffect(() => {
         async function fetchApi() {
             try {
                 setLoading(true);
+                window.scrollTo({ top: 200, behavior: 'smooth' })
                 const request = await fetch(`https://phimapi.com/phim/${slug}`);
                 const data = await request.json();
+
                 setMovie(data.movie);
+                
+
                 const vietsubServer =
                     data.episodes.find((s) => s.server_name.toLowerCase().includes('vietsub')) || data.episodes[0];
-                setEpisodes(vietsubServer.server_data);
+                const listEpisodes = vietsubServer.server_data;
+
+                setEpisodes(listEpisodes);
+
                 if (selectedEpFromState) {
-                    console.log(selectedEpFromState);
-                    setCurrentEpisode(selectedEpFromState);
+                    const foundEpisode = listEpisodes.find((ep) => ep.name == selectedEpFromState);
+
+                    if (foundEpisode) {
+                        console.log('Tìm thấy tập đã xem:', foundEpisode);
+                        setCurrentEpisode(foundEpisode);
+                    } else {
+                        setCurrentEpisode(listEpisodes[0]);
+                    }
                 } else {
-                    setCurrentEpisode(vietsubServer.server_data[0]);
+                    setCurrentEpisode(listEpisodes[0]);
                 }
+                // ---------------------------
+
                 setLoading(false);
-            } catch {
-                console.log('Error');
+            } catch (e) {
+                console.log('Error fetch movie:', e);
+                setLoading(false);
             }
         }
         fetchApi();
     }, [slug]);
-    const [suggestedMovies, setSuggestedMovies] = useState([]);
+    useEffect(() => {
+        const fetchHistory = async () => {
+            if (stateCurrentTime !== undefined && stateCurrentTime !== null) {
+                return;
+            }
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
 
+                const res = await fetch(`http://localhost:3000/api/user/history/detail?slug=${slug}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                const data = await res.json();
+
+                if (data.currentTime) {
+                    setSavedTime(data.currentTime);
+                }
+            } catch (error) {
+                console.error('Lỗi lấy lịch sử:', error);
+            }
+        };
+
+        fetchHistory();
+    }, [slug, stateCurrentTime]); 
     useEffect(() => {
         async function fetchSuggestions() {
             try {
                 const res = await fetch('https://phimapi.com/v1/api/danh-sach/phim-chieu-rap/?limit=10');
                 const data = await res.json();
-                setSuggestedMovies(data.data.items.slice(0, 8)); // lấy 5 phim đầu
+                setSuggestedMovies(data.data.items.slice(0, 8)); 
             } catch (err) {
                 console.error('Lỗi tải đề xuất:', err);
             }
@@ -69,15 +118,57 @@ function MovieWatch() {
         fetchSuggestions();
     }, []);
     if (loading) {
-        return (
-            <div>
-                <h1>Đang tải</h1>
-            </div>
-        );
+        return <Loading />;
     }
     const changeEpisode = (src) => {
         console.log(src);
         setCurrentEpisode(src);
+        setSavedTime(0);             
+        lastSaveTimeRef.current = 0;
+    };
+
+    const handleProgress = async ({ currentTime, duration }) => {
+        if (Math.abs(currentTime - lastSaveTimeRef.current) > 10) {
+            console.log('Đã xem đến giây:', currentTime);
+            lastSaveTimeRef.current = currentTime;
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.log('Người dùng chưa đăng nhập, không lưu lịch sử.');
+                    return;
+                }
+                const payload = {
+                    movieData: {
+                        refId: movie.slug,
+                        title: movie.name, 
+                        poster_url: movie.poster_url,
+                        slug: slug, 
+                        totalEpisodes: movie.episode_total || 0,
+                    },
+                    episode: currentEpisode.name, 
+                    currentTime: currentTime,
+                    duration: duration, 
+                };
+
+                const response = await fetch('http://localhost:3000/api/user/history', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`, 
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Lỗi Server khi lưu lịch sử');
+                }
+
+                const data = await response.json();
+                console.log('✅ Đã lưu lịch sử:', currentTime, data);
+            } catch (error) {
+                console.error('❌ Lỗi lưu lịch sử:', error);
+            }
+        }
     };
     return (
         <div className={cx('wrapper')}>
@@ -93,13 +184,26 @@ function MovieWatch() {
                     </div>
                     {currentEpisode && (
                         <div className={cx('watch-wrapper')}>
+                            {console.log(currentEpisode.link_m3u8)}
                             <div className={cx('watch-ratio')}>
-                                <M3u8Player src={currentEpisode.link_m3u8} />
+                                <M3u8Player
+                                    key={currentEpisode.link_m3u8}
+                                    src={currentEpisode.link_m3u8}
+                                    onProgress={handleProgress}
+                                    startTime={savedTime}
+                                />
                             </div>
                             <div className={cx('row-player-control')}>
                                 <div className={cx('control-item')}>
-                                    <div className={cx('like-box')}>
-                                        <FontAwesomeIcon icon={faHeart} className={cx('icon')} /> Yêu thích
+                                    <div
+                                        className={cx('like-box')}
+                                        onClick={() => {
+                                            toggleLike(movie);
+                                            
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faHeart} className={cx('icon', { red: liked })} /> Yêu
+                                        thích
                                     </div>
                                     <div className={cx('add-box')}>
                                         <FontAwesomeIcon icon={faPlus} className={cx('icon')} /> Thêm vào
@@ -172,7 +276,7 @@ function MovieWatch() {
                                             <span>
                                                 <FontAwesomeIcon icon={faBarsStaggered} className={cx('bars-icon')} />
                                             </span>{' '}
-                                            Phần 1{' '}
+                                            Danh sách tập{' '}
                                             <span>
                                                 <FontAwesomeIcon icon={faCaretDown} className={cx('drop-icon')} />
                                             </span>
@@ -207,35 +311,31 @@ function MovieWatch() {
                         </div>
                     </div>
                     <div className={cx('watch-side')}>
-                        {/* <div className={cx('ws-rate')}>
-                                <div className={cx('line-box')}>
-                                    <div className={cx('rate')}><FontAwesomeIcon icon={faStar}/><p>Đánh giá</p></div>
-                                    <div className={cx('comments')}><FontAwesomeIcon icon={faMessage}/><p>Bình luận</p></div>
-                                </div>
-                                <div className={cx('w-rate')}></div>
-                            </div> */}
                         <div className={cx('suggest-movies')}>
                             <div className={cx('sm-list')}>
                                 <p className={cx('sm-header')}>Đề xuất cho bạn</p>
-                                {suggestedMovies.map((movie, index) => (
-                                    <div key={index} className={cx('sm-item')}>
-                                        <div className={cx('sm-thumb')}>
-                                            <img src={`https://phimimg.com/${movie.poster_url}`} alt=""></img>
-                                        </div>
-                                        <div className={cx('sm-info')}>
-                                            <div className={cx('name')}>{movie.name}</div>
-                                            <div className={cx('origin-name')}>{movie.origin_name}</div>
-                                            <div className={cx('stats')}>
-                                                <p>{movie.lang}</p>
-                                                <p>{movie.time}</p>
+                                {suggestedMovies.slice(0,6).map((movie, index) => (
+                                    <Link key={index} to={`/xem-phim/${movie.slug}`} >
+                                        <div key={index} className={cx('sm-item')}>
+                                            <div className={cx('sm-thumb')}>
+                                                <img src={`https://phimimg.com/${movie.poster_url}`} alt=""></img>
+                                            </div>
+                                            <div className={cx('sm-info')}>
+                                                <div className={cx('name')}>{movie.name}</div>
+                                                <div className={cx('origin-name')}>{movie.origin_name}</div>
+                                                <div className={cx('stats')}>
+                                                    <p>{movie.lang}</p>
+                                                    <p>{movie.time}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                         </div>
                     </div>
                 </div>
+                <MovieComments movieSlug={movie.slug} />
             </div>
         </div>
     );

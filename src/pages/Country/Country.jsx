@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import styles from './Country.module.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Loading from '../../components/Loading/Loading';
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +24,9 @@ function Country() {
         };
         fetchApi();
     }, [slug]);
+    if (loading) {
+        return <Loading />;
+    }
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>

@@ -72,7 +72,7 @@
     }
     .movie-story {
         display: -webkit-box;
-        -webkit-line-clamp: 3; // Số dòng tối đa
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         font-size: 14px;

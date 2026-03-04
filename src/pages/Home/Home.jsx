@@ -9,6 +9,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { Link } from 'react-router-dom';
+import Loading from '../../components/Loading/Loading';
+import MovieCard from '../../components/MovieCard/MovieCard';
+
 const cx = classNames.bind(styles);
 
 function Home() {
@@ -63,7 +66,7 @@ function Home() {
     }, []);
 
     if (loading) {
-        return <h1>Đang tải</h1>;
+        return <Loading />;
     }
 
     return (
@@ -71,104 +74,7 @@ function Home() {
             <Slider movies={movies.moviesApi.data.items}></Slider>
             <div className={cx('container')}>
                 <div className={cx('content-section')}>
-                    <div className={cx('topic-list')}>
-                        <div className={cx('list-header')}>
-                            <p>Bạn đang quan tâm gì?</p>
-                        </div>
-                        <div className={cx('box')}>
-                            <div className={cx('box-item')}>
-                                <div className={cx('box-content')}>
-                                    <div className={cx('box-topic')}>
-                                        <Link to={`chu-de/Marvel`}><p>Marvel</p></Link>
-                                    </div>
-                                    <div className={cx('more')}>
-                                        <p>
-                                            xem chủ đề
-                                            <FontAwesomeIcon icon={faAngleRight}></FontAwesomeIcon>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={cx('box-item')}>
-                                <div className={cx('box-content')}>
-                                    <div className={cx('box-topic')}>
-                                        <p>4K</p>
-                                    </div>
-                                    <div className={cx('more')}>
-                                        <p>
-                                            xem chủ đề
-                                            <FontAwesomeIcon icon={faAngleRight}></FontAwesomeIcon>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={cx('box-item')}>
-                                <div className={cx('box-content')}>
-                                    <div className={cx('box-topic')}>
-                                        <p>Sitcom</p>
-                                    </div>
-                                    <div className={cx('more')}>
-                                        <p>
-                                            xem chủ đề
-                                            <FontAwesomeIcon icon={faAngleRight}></FontAwesomeIcon>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={cx('box-item')}>
-                                <div className={cx('box-content')}>
-                                    <div className={cx('box-topic')}>
-                                        <p>Lồng tiếng cực mạnh</p>
-                                    </div>
-                                    <div className={cx('more')}>
-                                        <p>
-                                            xem chủ đề
-                                            <FontAwesomeIcon icon={faAngleRight}></FontAwesomeIcon>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={cx('box-item')}>
-                                <div className={cx('box-content')}>
-                                    <div className={cx('box-topic')}>
-                                        <p>Xuyên không</p>
-                                    </div>
-                                    <div className={cx('more')}>
-                                        <p>
-                                            xem chủ đề
-                                            <FontAwesomeIcon icon={faAngleRight}></FontAwesomeIcon>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={cx('box-item')}>
-                                <div className={cx('box-content')}>
-                                    <div className={cx('box-topic')}>
-                                        <p>Cổ trang</p>
-                                    </div>
-                                    <div className={cx('more')}>
-                                        <p>
-                                            xem chủ đề
-                                            <FontAwesomeIcon icon={faAngleRight}></FontAwesomeIcon>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={cx('box-item')}>
-                                <div className={cx('box-content')}>
-                                    <div className={cx('box-topic')}>
-                                        <p>+4 chủ đề</p>
-                                    </div>
-                                    <div className={cx('more')}>
-                                        <p>
-                                            xem chủ đề
-                                            <FontAwesomeIcon icon={faAngleRight}></FontAwesomeIcon>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {/*  */}
                     <div className={cx('product-section')}>
                         <div className={cx('product-container')}>
                             <div className={cx('row-intro')}>
@@ -329,16 +235,21 @@ function Home() {
                                                 return (
                                                     <SwiperSlide key={index}>
                                                         <div className={cx('product-item')}>
-                                                            <div className={cx('product-img')}>
-                                                                <img
-                                                                    src={`https://phimimg.com/${movie.thumb_url}`}
-                                                                    alt=""
-                                                                />
-                                                            </div>
-                                                            <div className={cx('product-name')}>{movie.name}</div>
-                                                            <div className={cx('product-origin-name')}>
-                                                                {movie.origin_name}
-                                                            </div>
+                                                            <Link
+                                                                to={`/xem-phim/${movie.slug}`}
+                                                                className={cx('product-link')}
+                                                            >
+                                                                <div className={cx('product-img')}>
+                                                                    <img
+                                                                        src={`https://phimimg.com/${movie.thumb_url}`}
+                                                                        alt=""
+                                                                    />
+                                                                </div>
+                                                                <div className={cx('product-name')}>{movie.name}</div>
+                                                                <div className={cx('product-origin-name')}>
+                                                                    {movie.origin_name}
+                                                                </div>
+                                                            </Link>
                                                         </div>
                                                     </SwiperSlide>
                                                 );
@@ -363,7 +274,6 @@ function Home() {
                             <Swiper
                                 className={cx('custom-swiper')}
                                 modules={[]}
-                                
                                 spaceBetween={50}
                                 slidesPerView={8}
                                 onSlideChange={() => console.log('slide change')}
@@ -372,13 +282,7 @@ function Home() {
                                 {movies.moviesApi.data.items.map((movie, index) => {
                                     return (
                                         <SwiperSlide key={index}>
-                                            <div className={cx('product-item')}>
-                                                <div className={cx('product-img')}>
-                                                    <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
-                                                </div>
-                                                <div className={cx('product-name')}>{movie.name}</div>
-                                                <div className={cx('product-origin-name')}>{movie.origin_name}</div>
-                                            </div>
+                                            <MovieCard movie={movie} isVertical={true} />
                                         </SwiperSlide>
                                     );
                                 })}
@@ -391,7 +295,6 @@ function Home() {
                             <Swiper
                                 className={cx('custom-swiper')}
                                 modules={[]}
-                                
                                 spaceBetween={50}
                                 slidesPerView={8}
                                 onSlideChange={() => console.log('slide change')}
@@ -401,11 +304,13 @@ function Home() {
                                     return (
                                         <SwiperSlide key={index}>
                                             <div className={cx('product-item')}>
-                                                <div className={cx('product-img')}>
-                                                    <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
-                                                </div>
-                                                <div className={cx('product-name')}>{movie.name}</div>
-                                                <div className={cx('product-origin-name')}>{movie.origin_name}</div>
+                                                <Link to={`/xem-phim/${movie.slug}`} className={cx('product-link')}>
+                                                    <div className={cx('product-img')}>
+                                                        <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
+                                                    </div>
+                                                    <div className={cx('product-name')}>{movie.name}</div>
+                                                    <div className={cx('product-origin-name')}>{movie.origin_name}</div>
+                                                </Link>
                                             </div>
                                         </SwiperSlide>
                                     );
@@ -419,7 +324,6 @@ function Home() {
                             <Swiper
                                 className={cx('custom-swiper')}
                                 modules={[]}
-                                
                                 spaceBetween={50}
                                 slidesPerView={8}
                                 onSlideChange={() => console.log('slide change')}
@@ -429,11 +333,13 @@ function Home() {
                                     return (
                                         <SwiperSlide key={index}>
                                             <div className={cx('product-item')}>
-                                                <div className={cx('product-img')}>
-                                                    <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
-                                                </div>
-                                                <div className={cx('product-name')}>{movie.name}</div>
-                                                <div className={cx('product-origin-name')}>{movie.origin_name}</div>
+                                                <Link to={`/xem-phim/${movie.slug}`} className={cx('product-link')}>
+                                                    <div className={cx('product-img')}>
+                                                        <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
+                                                    </div>
+                                                    <div className={cx('product-name')}>{movie.name}</div>
+                                                    <div className={cx('product-origin-name')}>{movie.origin_name}</div>
+                                                </Link>
                                             </div>
                                         </SwiperSlide>
                                     );
@@ -441,7 +347,6 @@ function Home() {
                             </Swiper>
                         }
                     </div>
-                    {/* section */}
                 </div>
             </div>
         </div>
