@@ -4,7 +4,7 @@ import styles from './Profile.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../hooks/useAuth';
-
+import { useToast } from '../../contexts/ToastContext';
 const cx = classNames.bind(styles);
 
 export default function SettingsTab({ userInfo, avatarUrl, onUpdateSuccess }) {
@@ -12,6 +12,7 @@ export default function SettingsTab({ userInfo, avatarUrl, onUpdateSuccess }) {
     const [editPassword, setEditPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const { updateUser } = useAuth();
+    const { addToast } = useToast();
     useEffect(() => {
         if (userInfo.username) {
             setEditUsername(userInfo.username);
@@ -45,16 +46,16 @@ export default function SettingsTab({ userInfo, avatarUrl, onUpdateSuccess }) {
             const data = await res.json();
 
             if (data.success) {
-                alert('Cập nhật thông tin thành công!');
                 onUpdateSuccess(data.data);
                 updateUser({ username: editUsername });
                 setEditPassword('');
+                addToast('Cập nhật thông tin thành công!', 'success');
             } else {
-                alert('Lỗi cập nhật: ' + data.message);
+                addToast(data.message || 'Có lỗi xảy ra khi cập nhật thông tin.', 'error');
             }
         } catch (error) {
             console.error('Lỗi khi lưu thông tin:', error);
-            alert('Có lỗi xảy ra khi lưu thông tin.');
+            addToast('Có lỗi xảy ra khi lưu thông tin.', 'error');
         } finally {
             setLoading(false);
         }

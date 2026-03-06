@@ -9,6 +9,8 @@ import 'swiper/css/pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faHeart, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { useWatchlist } from '../../hooks/useWatchList';
+import decodeHtml from '../../untils/decodeHtml';
 
 const cx = classNames.bind(styles);
 function Slider({ movies }) {
@@ -16,6 +18,8 @@ function Slider({ movies }) {
     const [activeIndex, setActiceIndex] = useState(0);
     const [movieDetail, setMovieDetail] = useState([]);
     const [loading, setLoading] = useState(true);
+    const {liked, toggleLike} = useWatchlist(movieDetail[activeIndex]?.movie);
+    
     useEffect(() => {
         const fetchApi = async () => {
             try {
@@ -82,19 +86,19 @@ function Slider({ movies }) {
                         ))}
                     </div>
                     <div className={cx('movie-story')}>
-                        <p>{movieDetail[activeIndex]?.movie?.content}</p>
+                        <p>{decodeHtml(movieDetail[activeIndex]?.movie?.content)}</p>
                     </div>
                     <div className={cx('touch')}>
-                        <a className={cx('button-play')}>
+                        <Link to={`/xem-phim/${movies[activeIndex]?.slug}`}className={cx('button-play')}>
                             <FontAwesomeIcon className={cx('play-icon')} icon={faPlay} />
-                        </a>
-                        <div className={cx('touch-group')}>
-                            <a className={cx('item')}>
-                                <FontAwesomeIcon className={cx('heart-icon')} icon={faHeart} />
+                        </Link>
+                        <div className={cx('touch-group')} >
+                            <a className={cx('item')} onClick={toggleLike}>
+                                <FontAwesomeIcon className={cx('heart-icon', { red: liked })} icon={faHeart} />
                             </a>
-                            <a className={cx('item')}>
+                            <Link className={cx('item')} to={`/phim/${movies[activeIndex]?.slug}`}>
                                 <FontAwesomeIcon className={cx('circleinfo-icon')} icon={faCircleInfo} />
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

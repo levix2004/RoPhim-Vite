@@ -303,15 +303,7 @@ function Home() {
                                 {movies.tvSeriesApi.data.items.map((movie, index) => {
                                     return (
                                         <SwiperSlide key={index}>
-                                            <div className={cx('product-item')}>
-                                                <Link to={`/xem-phim/${movie.slug}`} className={cx('product-link')}>
-                                                    <div className={cx('product-img')}>
-                                                        <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
-                                                    </div>
-                                                    <div className={cx('product-name')}>{movie.name}</div>
-                                                    <div className={cx('product-origin-name')}>{movie.origin_name}</div>
-                                                </Link>
-                                            </div>
+                                            <MovieCard movie={movie} isVertical={true} />
                                         </SwiperSlide>
                                     );
                                 })}
@@ -332,15 +324,7 @@ function Home() {
                                 {movies.singleMoviesApi.data.items.map((movie, index) => {
                                     return (
                                         <SwiperSlide key={index}>
-                                            <div className={cx('product-item')}>
-                                                <Link to={`/xem-phim/${movie.slug}`} className={cx('product-link')}>
-                                                    <div className={cx('product-img')}>
-                                                        <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
-                                                    </div>
-                                                    <div className={cx('product-name')}>{movie.name}</div>
-                                                    <div className={cx('product-origin-name')}>{movie.origin_name}</div>
-                                                </Link>
-                                            </div>
+                                            <MovieCard movie={movie} isVertical={true} />
                                         </SwiperSlide>
                                     );
                                 })}

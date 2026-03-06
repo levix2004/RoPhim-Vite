@@ -3,6 +3,7 @@ import styles from './Country.module.scss';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Loading from '../../components/Loading/Loading';
+import Pagination from '../../components/Pagination/Pagination';
 
 const cx = classNames.bind(styles);
 
@@ -10,11 +11,12 @@ function Country() {
     const { slug } = useParams();
     const [movies, setMovies] = useState({});
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
     useEffect(() => {
         const fetchApi = async () => {
             try {
                 setLoading(true);
-                const request = await fetch(`https://phimapi.com/v1/api/quoc-gia/${slug}/?limit=16`);
+                const request = await fetch(`https://phimapi.com/v1/api/quoc-gia/${slug}/?limit=32&page=${page}`);
                 const data = await request.json();
                 setMovies(data.data);
                 setLoading(false);
@@ -23,7 +25,7 @@ function Country() {
             }
         };
         fetchApi();
-    }, [slug]);
+    }, [slug, page]);
     if (loading) {
         return <Loading />;
     }
@@ -44,6 +46,11 @@ function Country() {
                         );
                     })}
                 </div>
+                <Pagination
+                    currentPage={page}
+                    totalPages={movies?.params?.pagination?.totalPages || 1}
+                    onPageChange={(newPage) => setPage(newPage)}
+                />
             </div>
         </div>
     );

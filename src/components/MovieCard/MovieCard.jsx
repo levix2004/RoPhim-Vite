@@ -37,11 +37,11 @@ export default function MovieCard({ movie, isVertical = true }) {
                 <div className={cx('hover-card-popup')}>
                     <div className={cx('hover-img-wrapper')}>
                         <img src={`https://phimimg.com/${movie.thumb_url}`} alt={movie.name} />
-                        <div className={cx('hover-logo')}>{movie.name}</div>
                     </div>
 
                     <div className={cx('hover-info')}>
-                        <h4 className={cx('hover-title')}>{movie.origin_name}</h4>
+                        <div className={cx('hover-title')}>{movie.name}</div>
+                        <div className={cx('hover-origin-name')}>{movie.origin_name}</div>
 
                         <div className={cx('action-buttons')}>
                             <button className={cx('btn-primary')} onClick={() => navigate(`/xem-phim/${movie.slug}`)}>
@@ -66,7 +66,11 @@ export default function MovieCard({ movie, isVertical = true }) {
                             <span className={cx('episode')}>{movie.episode_current || 'Full'}</span>
                         </div>
 
-                        <div className={cx('genres')}>Hành động • Viễn tưởng</div>
+                        <div className={cx('genres')}>
+                            {movie?.category?.map((item, index) => (
+                                <p key={index}>{item.name}</p>
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}

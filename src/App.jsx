@@ -7,6 +7,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import LoginModal from './components/AuthModal/LoginModal';
 import { useAuth } from './hooks/useAuth';
 import RegisterModal from './components/AuthModal/RegisterModal';
+import ProtectedRoute from './components/ProtectedRoute';
+
 function App() {
     const { showLoginModal, showRegisterModal, onSwitchToRegister } = useAuth();
 
@@ -20,6 +22,21 @@ function App() {
                     {routes.map((route, index) => {
                         const Page = route.component;
                         const Layout = MainLayout;
+                        if (route.isPrivate) {
+                            return (
+                                <Route
+                                    key={index}
+                                    path={route.path}
+                                    element={
+                                        <ProtectedRoute>
+                                            <Layout>
+                                                <Page />
+                                            </Layout>
+                                        </ProtectedRoute>
+                                    }
+                                />
+                            );
+                        }
                         return (
                             <Route
                                 key={index}

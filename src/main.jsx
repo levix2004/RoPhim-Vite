@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import GlobalStyles from './components/GlobalStyles/GlobalStyles.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
-
+import { ToastProvider } from './contexts/ToastContext.jsx';
 const suppressedWarnings = ['Accessing element.ref was removed in React 19'];
 const origWarn = console.error;
 console.error = (...args) => {
@@ -17,9 +17,11 @@ console.error = (...args) => {
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <AuthProvider>
-            <GlobalStyles>
-                <App />
-            </GlobalStyles>
+            <ToastProvider>
+                <GlobalStyles>
+                    <App />
+                </GlobalStyles>
+            </ToastProvider>
         </AuthProvider>
     </StrictMode>,
 );

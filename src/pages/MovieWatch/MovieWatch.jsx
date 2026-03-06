@@ -24,6 +24,7 @@ import { useLocation } from 'react-router-dom';
 import Loading from '../../components/Loading/Loading';
 import { useWatchlist } from '../../hooks/useWatchList';
 import MovieComments from '../../components/MovieComments/MovieComments';
+import decodeHtml from '../../untils/decodeHtml';
 
 
 const cx = classNames.bind(styles);
@@ -256,7 +257,7 @@ function MovieWatch() {
                             </div>
                             <div className={cx('desc-line')}>
                                 <div className={cx('description')}>
-                                    <p>{movie.content}</p>
+                                    <p>{decodeHtml(movie.content)}</p>
                                 </div>
                                 <div className={cx('more-info')}>
                                     <a href={`/phim/${slug}`}>

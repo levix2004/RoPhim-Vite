@@ -4,7 +4,7 @@ import { useAuth } from './useAuth';
 export const useWatchlist = (movie) => {
     const [liked, setLiked] = useState(false);
     const { requireAuth } = useAuth();
-
+    console.log(movie?.slug);
     useEffect(() => {
         const checkIsLiked = async () => {
             if (!movie || !movie.slug) return; 

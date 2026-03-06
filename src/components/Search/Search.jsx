@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
 import { useEffect, useRef, useState } from 'react';
 import useDebounce from '../../hooks/useDebounce';
+import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Search() {
@@ -55,19 +56,21 @@ function Search() {
                             <div className={cx('sm-list')}>
                                 <p className={cx('sm-header')}>Danh sách phim</p>
                                 {search.map((movie, index) => (
-                                    <div className={cx('sm-item')} key={movie.id || index}>
-                                        <div className={cx('sm-thumb')}>
-                                            <img src={`https://phimimg.com/${movie.poster_url}`} alt={movie.name} />
-                                        </div>
-                                        <div className={cx('sm-info')}>
-                                            <div className={cx('name')}>{movie.name}</div>
-                                            <div className={cx('origin-name')}>{movie.origin_name}</div>
-                                            <div className={cx('stats')}>
-                                                <p>{movie.lang}</p>
-                                                <p>{movie.time}</p>
+                                    <Link to={`/xem-phim/${movie.slug}`} key={index} className={cx('sm-item-link')}>
+                                        <div className={cx('sm-item')} >
+                                            <div className={cx('sm-thumb')}>
+                                                <img src={`https://phimimg.com/${movie.poster_url}`} alt={movie.name} />
+                                            </div>
+                                            <div className={cx('sm-info')}>
+                                                <div className={cx('name')}>{movie.name}</div>
+                                                <div className={cx('origin-name')}>{movie.origin_name}</div>
+                                                <div className={cx('stats')}>
+                                                    <p>{movie.lang}</p>
+                                                    <p>{movie.time}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                                 <div className={cx('show-all')}>Toàn bộ kết quả</div>
                             </div>

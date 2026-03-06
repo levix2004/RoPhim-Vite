@@ -5,12 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as faStarSolid, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { useAuth } from '../../hooks/useAuth';
-
+import { useToast } from '../../contexts/ToastContext';
 const cx = classNames.bind(styles);
 
 export default function MovieComments({ movieSlug }) {
     const { user, requireAuth } = useAuth();
+    const { addToast } = useToast();
 
+    console.log('Current user:', user);
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -31,6 +33,7 @@ export default function MovieComments({ movieSlug }) {
                 }
             } catch (error) {
                 console.error('Lỗi tải bình luận:', error);
+                addToast('Lỗi tải bình luận!', 'error');
             } finally {
                 setLoading(false);
             }
@@ -43,11 +46,11 @@ export default function MovieComments({ movieSlug }) {
 
         requireAuth(async () => {
             if (rating === 0) {
-                alert('Vui lòng chọn số sao đánh giá!');
+                addToast('Vui lòng chọn số sao đánh giá!', 'error');
                 return;
             }
             if (!content.trim()) {
-                alert('Vui lòng nhập nội dung bình luận!');
+                addToast('Vui lòng nhập nội dung bình luận!', 'error');
                 return;
             }
 
@@ -72,12 +75,13 @@ export default function MovieComments({ movieSlug }) {
                     setComments([data.data, ...comments]);
                     setContent('');
                     setRating(0);
+                    addToast('Bình luận của bạn đã được gửi!', 'success');
                 } else {
-                    alert(data.message || 'Có lỗi xảy ra khi gửi bình luận.');
+                    addToast(data.message || 'Có lỗi xảy ra khi gửi bình luận.', 'error');
                 }
             } catch (error) {
                 console.error('Lỗi gửi bình luận:', error);
-                alert('Mạng không ổn định, vui lòng thử lại.');
+                addToast('Mạng không ổn định, vui lòng thử lại.', 'error');
             } finally {
                 setIsSubmitting(false);
             }
@@ -91,7 +95,7 @@ export default function MovieComments({ movieSlug }) {
             <div className={cx('comment-form-container')}>
                 <div className={cx('user-avatar')}>
                     <img
-                        src={user?.avatar || 'https://files.fullstack.edu.vn/f8-prod/user_avatars/1/623d4b2d95cec.png'}
+                        src={user?.avatarUrl || '/logo.svg'}
                         alt="User"
                     />
                 </div>

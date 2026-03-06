@@ -5,7 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { authService } from '../../services/authService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faXmark } from '@fortawesome/free-solid-svg-icons';
-
+import { useToast } from '../../contexts/ToastContext';
 const cx = classNames.bind(styles);
 
 export default function LoginModal() {
@@ -16,22 +16,20 @@ export default function LoginModal() {
     const [errorMessage, setErrorMessage] = useState('');
 
     const { login, onSwitchToRegister, onCloseLoginModal } = useAuth();
-
+    const { addToast } = useToast();
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
         setErrorMessage('');
 
         try {
-
             const userData = await authService.login(email, password);
-
-
             login(userData);
-            
+            addToast('Đăng nhập thành công!', 'success');
+            onCloseLoginModal();
         } catch (err) {
-
             setErrorMessage(err.response?.data?.message || 'Email hoặc mật khẩu không đúng!');
+            addToast('Đăng nhập thất bại!', 'error');
         } finally {
             setLoading(false);
         }
@@ -93,7 +91,7 @@ export default function LoginModal() {
                 </form>
 
                 <div className={cx('logo')}>
-                    <img src="/blog-rophim-logo.png" alt="Logo" />
+                    <img src="/logo.svg" alt="Logo" />
                 </div>
             </div>
         </div>

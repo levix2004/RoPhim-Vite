@@ -20,6 +20,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Loading from '../../components/Loading/Loading';
 import { useWatchlist } from '../../hooks/useWatchList';
+import decodeHtml from '../../untils/decodeHtml';
 
 const cx = classNames.bind(styles);
 
@@ -104,7 +105,7 @@ function Movie() {
                         </div>
                         <div className={cx('movie-desc')}>
                             <p className={cx('label')}>Giới thiệu: </p>
-                            <p>{movie.content}</p>
+                            <p>{decodeHtml(movie.content)}</p>
                         </div>
                         <div className={cx('movie-time')}>
                             <p className={cx('label')}>Thời lượng: </p>
@@ -229,13 +230,15 @@ function Movie() {
                                     <div className={cx('list-product')}>
                                         {suggestedMovies.map((movie, index) => {
                                             return (
-                                                <div key={index} className={cx('product-item')}>
-                                                    <div className={cx('product-img')}>
-                                                        <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
+                                                <Link to={`/xem-phim/${movie.slug}`} key={index} className={cx('product-link')}>
+                                                    <div key={index} className={cx('product-item')}>
+                                                        <div className={cx('product-img')}>
+                                                            <img src={`https://phimimg.com/${movie.poster_url}`} alt="" />
+                                                        </div>
+                                                        <div className={cx('product-name')}>{movie.name}</div>
+                                                        <div className={cx('product-origin-name')}>{movie.origin_name}</div>
                                                     </div>
-                                                    <div className={cx('product-name')}>{movie.name}</div>
-                                                    <div className={cx('product-origin-name')}>{movie.origin_name}</div>
-                                                </div>
+                                                </Link>
                                             );
                                         })}
                                     </div>

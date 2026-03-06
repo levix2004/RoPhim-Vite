@@ -9,7 +9,7 @@ import Search from '../../../components/Search/Search';
 import LoginModal from '../../../components/AuthModal/LoginModal';
 import RegisterModal from '../../../components/AuthModal/RegisterModal';
 import { useAuth } from '../../../hooks/useAuth';
-
+import { useToast } from '../../../contexts/ToastContext';
 const cx = classNames.bind(styles);
 
 function Header() {
@@ -18,12 +18,11 @@ function Header() {
     const [categories, setCategories] = useState([]);
     const [country, setCountry] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const { addToast } = useToast();
     const { setShowLoginModal, setShowRegisterModal } = useAuth();
 
     const { user, logout } = useAuth();
-    
-    
+
     useEffect(() => {
         const handleScroll = () => {
             setIsScroll(window.scrollY > 1);
@@ -50,13 +49,17 @@ function Header() {
         };
         fetchCategoriesApi();
     }, []);
-
+    const handleLogout = () => {
+        logout();
+        addToast('Đăng xuất thành công', 'success');
+        window.location.href = '/';
+    };
     const renderUserMenu = (attrs) => (
         <div className={cx('user-dropdown')} tabIndex="-1" {...attrs}>
             <div className={cx('user-info')}>
-                <img 
-                    src={user?.avatarUrl || "https://files.fullstack.edu.vn/f8-prod/user_avatars/1/623d4b2d95cec.png"} 
-                    alt="avatar" 
+                <img
+                    src={user?.avatarUrl || 'https://files.fullstack.edu.vn/f8-prod/user_avatars/1/623d4b2d95cec.png'}
+                    alt="avatar"
                     className={cx('avatar-small')}
                 />
                 <span className={cx('username')}>{user?.username || 'Thành viên'}</span>
@@ -73,8 +76,8 @@ function Header() {
                         <FontAwesomeIcon icon={faGear} /> Cài đặt
                     </Link>
                 </li>
-                <li onClick={logout} className={cx('logout-item')}>
-                        <FontAwesomeIcon icon={faSignOut} /> Đăng xuất
+                <li onClick={handleLogout} className={cx('logout-item')}>
+                    <FontAwesomeIcon icon={faSignOut} /> Đăng xuất
                 </li>
             </ul>
         </div>
@@ -84,21 +87,20 @@ function Header() {
         <>
             <div className={cx('wrapper', { scrolled: isScroll })}>
                 <div className={cx('container')}>
-                    
                     <div className={cx('logo')}>
                         <div>
                             <Link to={'/'}>
-                                <img src="/blog-rophim-logo.png" alt="Logo" />
+                                <img src="/logo.svg" alt="Logo" />
                             </Link>
                         </div>
                     </div>
 
                     <Search />
-                    
+
                     <div className={cx('menu-bar')}>
                         <div className={cx('menu-inner')}>
                             <div className={cx('menu-item')}>
-                                <ul className={cx('menu-item-ul')}>                                  
+                                <ul className={cx('menu-item-ul')}>
                                     <Tippy
                                         offset={[0, 15]}
                                         interactive
@@ -118,14 +120,23 @@ function Header() {
                                         )}
                                     >
                                         <li className={cx('no-hover')}>
-                                            Thể loại <span style={{ padding: 5 }}><FontAwesomeIcon icon={faCaretDown} /></span>
+                                            Thể loại{' '}
+                                            <span style={{ padding: 5 }}>
+                                                <FontAwesomeIcon icon={faCaretDown} />
+                                            </span>
                                         </li>
                                     </Tippy>
 
-                                    <Link to={`/danh-sach/phim-le`}><li>Phim lẻ</li></Link>
-                                    <Link to={`/danh-sach/phim-bo`}><li>Phim bộ</li></Link>
-                                    <Link to={`/danh-sach/phim-chieu-rap`}><li>Phim chiếu rạp</li></Link>
-                                    
+                                    <Link to={`/danh-sach/phim-le`}>
+                                        <li>Phim lẻ</li>
+                                    </Link>
+                                    <Link to={`/danh-sach/phim-bo`}>
+                                        <li>Phim bộ</li>
+                                    </Link>
+                                    <Link to={`/danh-sach/phim-chieu-rap`}>
+                                        <li>Phim chiếu rạp</li>
+                                    </Link>
+
                                     <Tippy
                                         offset={[0, 15]}
                                         interactive
@@ -145,7 +156,10 @@ function Header() {
                                         )}
                                     >
                                         <li className={cx('no-hover')}>
-                                            Quốc gia <span style={{ padding: 5 }}><FontAwesomeIcon icon={faCaretDown} /></span>
+                                            Quốc gia{' '}
+                                            <span style={{ padding: 5 }}>
+                                                <FontAwesomeIcon icon={faCaretDown} />
+                                            </span>
                                         </li>
                                     </Tippy>
                                 </ul>
@@ -161,17 +175,15 @@ function Header() {
                                     <span className={cx('badge')}>3</span>
                                 </button>
                             </Tippy>
-                            <Tippy
-                                interactive
-                                trigger="click"
-                                placement="bottom-end"
-                                render={renderUserMenu}
-                            >
+                            <Tippy interactive trigger="click" placement="bottom-end" render={renderUserMenu}>
                                 <div className={cx('user-avatar')}>
-                                    {console.log('User data in header:', user)}                 
-                                    <img 
-                                        src={user?.avatarUrl || "https://files.fullstack.edu.vn/f8-prod/user_avatars/1/623d4b2d95cec.png"} 
-                                        alt="User" 
+                                    {console.log('User data in header:', user)}
+                                    <img
+                                        src={
+                                            user?.avatarUrl ||
+                                            'https://files.fullstack.edu.vn/f8-prod/user_avatars/1/623d4b2d95cec.png'
+                                        }
+                                        alt="User"
                                     />
                                 </div>
                             </Tippy>
@@ -182,7 +194,9 @@ function Header() {
                                 <div className={cx('sub-inner')}>
                                     <div className={cx('sub-btn')}>
                                         <button onClick={() => setShowRegisterModal(true)}>
-                                            <span><FontAwesomeIcon className={cx('sub-icon')} icon={faUser} /></span>
+                                            <span>
+                                                <FontAwesomeIcon className={cx('sub-icon')} icon={faUser} />
+                                            </span>
                                             Đăng ký
                                         </button>
                                     </div>
@@ -192,7 +206,9 @@ function Header() {
                                 <div className={cx('login-inner')}>
                                     <div className={cx('login-btn')}>
                                         <button onClick={() => setShowLoginModal(true)}>
-                                            <span><FontAwesomeIcon className={cx('login-icon')} icon={faUser} /></span>
+                                            <span>
+                                                <FontAwesomeIcon className={cx('login-icon')} icon={faUser} />
+                                            </span>
                                             Đăng nhập
                                         </button>
                                     </div>
@@ -201,7 +217,7 @@ function Header() {
                         </>
                     )}
                 </div>
-            </div> 
+            </div>
         </>
     );
 }

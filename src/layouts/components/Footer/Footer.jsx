@@ -13,7 +13,7 @@ function Footer() {
                 <div className={cx('grid')}>
                     <div className={cx('col')}>
                         <Link to="/" className={cx('logo')}>
-                            <span><img src="/blog-rophim-logo.png" alt="Logo PhimMới" /></span>
+                            <span><img src="/logo.svg" alt="Logo PhimMới" /></span>
                         </Link>
                         <p className={cx('desc')}>
                             Rổ Phim - Trang xem phim trực tuyến miễn phí chất lượng cao. Cập nhật các bộ phim mới nhất, phim chiếu rạp, phim bộ vietsub nhanh nhất.

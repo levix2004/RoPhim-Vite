@@ -117,7 +117,7 @@ export default function RegisterModal() {
                 </form>
 
                 <div className={cx('logo')}>
-                    <img src="/blog-rophim-logo.png" alt="Logo" />
+                    <img src="/logo.svg" alt="Logo" />
                 </div>
             </div>
         </div>

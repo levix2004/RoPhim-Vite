@@ -1,4 +1,3 @@
-
 .card-wrapper {
     position: relative;
     width: 100%;
@@ -12,7 +11,7 @@
 
     .product-img {
         width: 100%;
-        overflow: hidden;
+
         border-radius: 8px;
         background-color: #2a2c38;
 
@@ -24,15 +23,16 @@
         }
 
         img {
-            width: 100%;
-            height: 100%;
+            border-radius: 10px;
+            width: 211px;
+            height: 316.5px;
             object-fit: cover;
             transition: transform 0.3s ease;
         }
     }
 
     &:hover .product-img img {
-        transform: scale(1.05); 
+        transform: scale(1.05);
     }
 
     .product-name {
@@ -50,6 +50,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        padding-top: 10px;
     }
 }
 
@@ -57,18 +58,22 @@
     position: absolute;
     top: -50px;
     left: 50%;
-    transform: translateX(-50%); 
-    width: 320px; 
+    transform: translateX(-50%);
+    width: 420px;
+    
     background-color: #181a27;
     border-radius: 12px;
     box-shadow:
         0 15px 40px rgba(0, 0, 0, 0.8),
         0 0 0 1px rgba(255, 255, 255, 0.1);
-    z-index: 999; 
+    z-index: 999;
     overflow: hidden;
-
+    margin-left: -160px;
     animation: popupScale 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-
+    :global(.swiper-slide-active) & {
+        left: 0;
+        margin-left: 0;
+    }
     .hover-img-wrapper {
         position: relative;
         width: 100%;
@@ -104,11 +109,16 @@
     .hover-info {
         padding: 15px 20px 25px;
         color: white;
-
         .hover-title {
+            font-size: 20px;
+            font-weight: 400;
+            color: white;
+        }
+        .hover-origin-name {
             font-size: 14px;
-            color: #aaa;
+            color: #ffd875;
             margin-bottom: 15px;
+            padding-top: 10px;
         }
 
         .action-buttons {
@@ -119,7 +129,7 @@
             button {
                 height: 40px;
                 border-radius: 4px;
-                font-weight: bold;
+                font-weight: 500;
                 cursor: pointer;
                 transition:
                     background 0.2s,
@@ -177,8 +187,16 @@
         }
 
         .genres {
-            font-size: 13px;
-            color: #ddd;
+            display: flex;
+            font-size: 12px;
+            padding: 0px 0 25px 0;
+            p {
+                color: white;
+                padding: 4px;
+                background-color: rgba(255, 255, 255, 0.063);
+                margin: 0 10px 0 0px;
+                border-radius: 4px;
+            }
         }
     }
 }
@@ -186,10 +204,10 @@
 @keyframes popupScale {
     0% {
         opacity: 0;
-        transform: translate(-50%, 20px) scale(0.8);
+        transform: translate(20px) scale(0.8);
     }
     100% {
         opacity: 1;
-        transform: translate(-50%, 0) scale(1);
+        transform: translate(0) scale(1);
     }
 }
