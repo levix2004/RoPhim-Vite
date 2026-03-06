@@ -34,7 +34,7 @@ export default function SettingsTab({ userInfo, avatarUrl, onUpdateSuccess }) {
                 bodyData.password = editPassword;
             }
 
-            const res = await fetch('http://localhost:3000/api/user/profile', {
+            const res = await fetch('http://rophim-be-dr9q.onrender.com/api/user/profile', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,11 +67,7 @@ export default function SettingsTab({ userInfo, avatarUrl, onUpdateSuccess }) {
             <form className={cx('form-settings')}>
                 <div className={cx('form-group')}>
                     <label>Tên hiển thị</label>
-                    <input
-                        type="text"
-                        value={editUsername}
-                        onChange={(e) => setEditUsername(e.target.value)}
-                    />
+                    <input type="text" value={editUsername} onChange={(e) => setEditUsername(e.target.value)} />
                 </div>
                 <div className={cx('form-group')}>
                     <label>Email đăng nhập</label>

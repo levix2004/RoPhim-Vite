@@ -26,7 +26,6 @@ import { useWatchlist } from '../../hooks/useWatchList';
 import MovieComments from '../../components/MovieComments/MovieComments';
 import decodeHtml from '../../untils/decodeHtml';
 
-
 const cx = classNames.bind(styles);
 
 function MovieWatch() {
@@ -41,17 +40,16 @@ function MovieWatch() {
     const [suggestedMovies, setSuggestedMovies] = useState([]);
     const stateCurrentTime = location.state?.currentTime;
     const [savedTime, setSavedTime] = useState(stateCurrentTime || 0);
-    const {liked, toggleLike} = useWatchlist(movie);
+    const { liked, toggleLike } = useWatchlist(movie);
     useEffect(() => {
         async function fetchApi() {
             try {
                 setLoading(true);
-                window.scrollTo({ top: 200, behavior: 'smooth' })
+                window.scrollTo({ top: 200, behavior: 'smooth' });
                 const request = await fetch(`https://phimapi.com/phim/${slug}`);
                 const data = await request.json();
 
                 setMovie(data.movie);
-                
 
                 const vietsubServer =
                     data.episodes.find((s) => s.server_name.toLowerCase().includes('vietsub')) || data.episodes[0];
@@ -90,7 +88,7 @@ function MovieWatch() {
                 const token = localStorage.getItem('token');
                 if (!token) return;
 
-                const res = await fetch(`http://localhost:3000/api/user/history/detail?slug=${slug}`, {
+                const res = await fetch(`http://rophim-be-dr9q.onrender.com/api/user/history/detail?slug=${slug}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const data = await res.json();
@@ -104,13 +102,13 @@ function MovieWatch() {
         };
 
         fetchHistory();
-    }, [slug, stateCurrentTime]); 
+    }, [slug, stateCurrentTime]);
     useEffect(() => {
         async function fetchSuggestions() {
             try {
                 const res = await fetch('https://phimapi.com/v1/api/danh-sach/phim-chieu-rap/?limit=10');
                 const data = await res.json();
-                setSuggestedMovies(data.data.items.slice(0, 8)); 
+                setSuggestedMovies(data.data.items.slice(0, 8));
             } catch (err) {
                 console.error('Lỗi tải đề xuất:', err);
             }
@@ -124,7 +122,7 @@ function MovieWatch() {
     const changeEpisode = (src) => {
         console.log(src);
         setCurrentEpisode(src);
-        setSavedTime(0);             
+        setSavedTime(0);
         lastSaveTimeRef.current = 0;
     };
 
@@ -141,21 +139,21 @@ function MovieWatch() {
                 const payload = {
                     movieData: {
                         refId: movie.slug,
-                        title: movie.name, 
+                        title: movie.name,
                         poster_url: movie.poster_url,
-                        slug: slug, 
+                        slug: slug,
                         totalEpisodes: movie.episode_total || 0,
                     },
-                    episode: currentEpisode.name, 
+                    episode: currentEpisode.name,
                     currentTime: currentTime,
-                    duration: duration, 
+                    duration: duration,
                 };
 
-                const response = await fetch('http://localhost:3000/api/user/history', {
+                const response = await fetch('http://rophim-be-dr9q.onrender.com/api/user/history', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`, 
+                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify(payload),
                 });
@@ -200,7 +198,6 @@ function MovieWatch() {
                                         className={cx('like-box')}
                                         onClick={() => {
                                             toggleLike(movie);
-                                            
                                         }}
                                     >
                                         <FontAwesomeIcon icon={faHeart} className={cx('icon', { red: liked })} /> Yêu
@@ -315,8 +312,8 @@ function MovieWatch() {
                         <div className={cx('suggest-movies')}>
                             <div className={cx('sm-list')}>
                                 <p className={cx('sm-header')}>Đề xuất cho bạn</p>
-                                {suggestedMovies.slice(0,6).map((movie, index) => (
-                                    <Link key={index} to={`/xem-phim/${movie.slug}`} >
+                                {suggestedMovies.slice(0, 6).map((movie, index) => (
+                                    <Link key={index} to={`/xem-phim/${movie.slug}`}>
                                         <div key={index} className={cx('sm-item')}>
                                             <div className={cx('sm-thumb')}>
                                                 <img src={`https://phimimg.com/${movie.poster_url}`} alt=""></img>

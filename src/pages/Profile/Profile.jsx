@@ -16,9 +16,11 @@ function Profile() {
     const [activeTab, setActiveTab] = useState('history');
     const { updateUser } = useAuth();
     const [userInfo, setUserInfo] = useState({});
-    const [avatarUrl, setAvatarUrl] = useState('https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg');
+    const [avatarUrl, setAvatarUrl] = useState(
+        'https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg',
+    );
     const [loading, setLoading] = useState(true);
-    
+
     const fileInputRef = useRef(null);
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -29,7 +31,7 @@ function Profile() {
             }
 
             try {
-                const res = await fetch('http://localhost:3000/api/user/profile', {
+                const res = await fetch('http://rophim-be-dr9q.onrender.com/api/user/profile', {
                     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 });
                 const data = await res.json();
@@ -60,7 +62,7 @@ function Profile() {
 
         try {
             const token = localStorage.getItem('token');
-            const uploadRes = await fetch('http://localhost:3000/api/upload', {
+            const uploadRes = await fetch('http://rophim-be-dr9q.onrender.com/api/upload', {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${token}` },
                 body: formData,
@@ -70,11 +72,12 @@ function Profile() {
 
             if (uploadData.success) {
                 setAvatarUrl(uploadData.url);
-                updateUser({ avatar: uploadData.url, avatarUrl: uploadData.url }); 
-                
+                updateUser({ avatar: uploadData.url, avatarUrl: uploadData.url });
             } else {
                 alert('Lỗi xử lý ảnh từ server: ' + uploadData.message);
-                setAvatarUrl(userInfo.avatar || 'https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg');
+                setAvatarUrl(
+                    userInfo.avatar || 'https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg',
+                );
             }
         } catch (error) {
             console.error('Lỗi khi gọi API upload ảnh:', error);
@@ -88,7 +91,10 @@ function Profile() {
         <div className={cx('wrapper')}>
             <div className={cx('profile-header')}>
                 <div className={cx('cover-image')}>
-                    <img src="https://assets.nflxext.com/ffe/siteui/vlv3/a73c4363-1dcd-4719-b3b1-373e7f667828/vn-vi/web/signup/hero-image.jpg" alt="Cover" />
+                    <img
+                        src="https://assets.nflxext.com/ffe/siteui/vlv3/a73c4363-1dcd-4719-b3b1-373e7f667828/vn-vi/web/signup/hero-image.jpg"
+                        alt="Cover"
+                    />
                     <div className={cx('overlay')}></div>
                 </div>
 
@@ -120,13 +126,22 @@ function Profile() {
             </div>
 
             <div className={cx('profile-nav')}>
-                <button className={cx('nav-item', { active: activeTab === 'history' })} onClick={() => setActiveTab('history')}>
+                <button
+                    className={cx('nav-item', { active: activeTab === 'history' })}
+                    onClick={() => setActiveTab('history')}
+                >
                     Lịch sử xem
                 </button>
-                <button className={cx('nav-item', { active: activeTab === 'watchlist' })} onClick={() => setActiveTab('watchlist')}>
+                <button
+                    className={cx('nav-item', { active: activeTab === 'watchlist' })}
+                    onClick={() => setActiveTab('watchlist')}
+                >
                     Tủ phim của tôi
                 </button>
-                <button className={cx('nav-item', { active: activeTab === 'settings' })} onClick={() => setActiveTab('settings')}>
+                <button
+                    className={cx('nav-item', { active: activeTab === 'settings' })}
+                    onClick={() => setActiveTab('settings')}
+                >
                     Thông tin tài khoản
                 </button>
             </div>
@@ -135,10 +150,10 @@ function Profile() {
                 {activeTab === 'history' && <HistoryTab />}
                 {activeTab === 'watchlist' && <WatchlistTab />}
                 {activeTab === 'settings' && (
-                    <SettingsTab 
-                        userInfo={userInfo} 
-                        avatarUrl={avatarUrl} 
-                        onUpdateSuccess={(newUserInfo) => setUserInfo(newUserInfo)} 
+                    <SettingsTab
+                        userInfo={userInfo}
+                        avatarUrl={avatarUrl}
+                        onUpdateSuccess={(newUserInfo) => setUserInfo(newUserInfo)}
                     />
                 )}
             </div>

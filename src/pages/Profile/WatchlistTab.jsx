@@ -22,7 +22,7 @@ export default function WatchlistTab() {
 
             try {
                 setLoading(true);
-                const res = await fetch(`http://localhost:3000/api/user/watchlist?page=${page}&limit=6`, {
+                const res = await fetch(`http://rophim-be-dr9q.onrender.com/api/user/watchlist?page=${page}&limit=6`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const data = await res.json();

@@ -25,8 +25,7 @@ export default function MovieComments({ movieSlug }) {
         const fetchComments = async () => {
             if (!movieSlug) return;
             try {
-                
-                const res = await fetch(`http://localhost:3000/api/comment/${movieSlug}`);
+                const res = await fetch(`http://rophim-be-dr9q.onrender.com/api/comment/${movieSlug}`);
                 const data = await res.json();
                 if (data.success) {
                     setComments(data.data);
@@ -57,7 +56,7 @@ export default function MovieComments({ movieSlug }) {
             setIsSubmitting(true);
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch(`http://localhost:3000/api/comment`, {
+                const res = await fetch(`http://rophim-be-dr9q.onrender.com/api/comment`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -94,10 +93,7 @@ export default function MovieComments({ movieSlug }) {
 
             <div className={cx('comment-form-container')}>
                 <div className={cx('user-avatar')}>
-                    <img
-                        src={user?.avatarUrl || '/logo.svg'}
-                        alt="User"
-                    />
+                    <img src={user?.avatarUrl || '/logo.svg'} alt="User" />
                 </div>
                 <form className={cx('comment-form')} onSubmit={handleSubmit}>
                     <div className={cx('star-rating')}>
